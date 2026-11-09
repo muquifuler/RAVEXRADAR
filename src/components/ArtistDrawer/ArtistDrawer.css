@@ -1,0 +1,512 @@
+/* src/components/ArtistDrawer/ArtistDrawer.css */
+.artist-drawer-shell {
+  position: absolute; top: 82px; right: 14px; bottom: 16px;
+  width: 400px; max-width: calc(100vw - 28px);
+  background: rgba(13, 13, 17, 0.96); backdrop-filter: blur(22px);
+  border: 1px solid var(--border-subtle); border-radius: 18px; z-index: 22;
+  display: flex; overflow: hidden;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.9);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.artist-drawer-shell.is-expanded { width: 810px; }
+
+.artist-info-column {
+  width: 400px; flex-shrink: 0; display: flex; flex-direction: column; position: relative;
+}
+
+/* Columna Izquierda Expandible: Sesiones y Fotos del DJ */
+.artist-media-column {
+  flex: 1; min-width: 340px; border-right: 1px solid var(--border-subtle);
+  display: flex; flex-direction: column; background: rgba(9, 9, 12, 0.94);
+}
+.artist-media-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-bottom: 1px solid var(--border-subtle); font-size: 13.5px;
+}
+.media-header-title { display: flex; align-items: center; gap: 8px; color: #ff5500; }
+
+.artist-media-tabs {
+  display: flex; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--border-subtle);
+}
+.artist-media-tabs button {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: #18181b; border: 1px solid var(--border-subtle);
+  color: #a1a1aa; padding: 6px 11px; border-radius: 8px;
+  font-size: 11.5px; font-weight: 700; cursor: pointer;
+}
+.artist-media-tabs button.active {
+  background: #ff5500; color: #fff; border-color: #ff5500;
+}
+
+.artist-media-feed {
+  flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px;
+}
+.artist-media-empty {
+  margin: auto; text-align: center; color: var(--text-muted); font-size: 12.5px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 24px;
+}
+.artist-media-card {
+  background: #141418; border: 1px solid var(--border-subtle);
+  border-radius: 12px; overflow: hidden;
+}
+.dj-session-video { width: 100%; max-height: 220px; background: #000; display: block; object-fit: cover; }
+.dj-gallery-photo { width: 100%; max-height: 240px; object-fit: cover; display: block; }
+.artist-media-caption {
+  padding: 9px 12px; display: flex; align-items: center; gap: 8px; font-size: 12px;
+}
+.media-type-pill {
+  font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px;
+  background: rgba(255, 85, 0, 0.16); color: #ff5500;
+}
+
+.btn-toggle-dj-media {
+  width: 100%; padding: 10px; border-radius: 10px;
+  background: rgba(255, 85, 0, 0.14); border: 1px solid #ff5500;
+  color: #ff5500; font-size: 12.5px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: auto;
+}
+.btn-toggle-dj-media:hover { background: rgba(255, 85, 0, 0.24); }
+
+/* Resto de estilos de ArtistDrawer */
+.artist-hero-banner {
+  position: relative; padding: 24px 18px 18px;
+  background: linear-gradient(160deg, rgba(255, 85, 0, 0.18) 0%, rgba(250, 204, 21, 0.08) 50%, #0d0d11 100%);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex; align-items: center; gap: 14px;
+}
+.artist-avatar-giant {
+  position: relative; width: 76px; height: 76px; border-radius: 50%;
+  border: 2.5px solid var(--accent-neon); background: #18181b;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  box-shadow: 0 0 20px rgba(250, 204, 21, 0.35);
+}
+.artist-avatar-giant img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+/* Con marco PRO: más aire para que el marco (y las llamas) no se corten */
+.artist-hero-banner.has-avatar-frame { padding-top: 36px; padding-left: 34px; gap: 30px; }
+.artist-hero-banner.has-avatar-frame .dj-live-tag { z-index: 4; }
+.dj-live-tag {
+  position: absolute; bottom: -5px; right: -4px;
+  background: #ff5500; color: #fff; font-size: 9.5px; font-weight: 700;
+  padding: 2px 6px; border-radius: 99px; display: flex; align-items: center; gap: 3px;
+  border: 1.5px solid #09090b;
+}
+.artist-header-titles { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+.artist-verified-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--accent-neon); font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+}
+.artist-header-titles h2 { font-size: 20px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.artist-Quick-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.artist-badge-city, .artist-badge-bpm {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3px 8px; border-radius: 6px; font-size: 11px; color: #d4d4d8;
+}
+
+.artist-drawer-body {
+  padding: 16px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 14px;
+}
+.artist-ranking-box {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(250, 204, 21, 0.08); border: 1px solid rgba(250, 204, 21, 0.35);
+  padding: 10px 12px; border-radius: 12px;
+}
+.ranking-left { display: flex; align-items: center; gap: 10px; }
+.ranking-left strong { display: block; font-size: 13.5px; color: #fff; }
+.ranking-left span { font-size: 11px; color: var(--text-muted); }
+
+.btn-give-hype {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--accent-neon); color: #000; border: none;
+  padding: 7px 11px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+.btn-give-hype.is-hyped {
+  background: rgba(34, 197, 94, 0.18); border: 1px solid #22c55e; color: #4ade80; cursor: default;
+}
+
+.artist-sc-section { display: flex; flex-direction: column; gap: 6px; }
+.sc-header-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+.sc-header-row span { display: flex; align-items: center; gap: 6px; }
+.sc-ext-link { color: #ff5500; font-size: 11px; text-decoration: none; display: flex; align-items: center; gap: 4px; font-weight: 700; }
+.sc-iframe-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--border-subtle); }
+
+.artist-gigs-section { display: flex; flex-direction: column; gap: 8px; }
+.artist-gigs-section h4 { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: #e4e4e7; }
+.artist-gig-card {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  background: #18181b; border: 1px solid var(--border-subtle);
+  padding: 8px; border-radius: 10px; cursor: pointer; text-align: left; color: #fff;
+}
+.artist-gig-card:hover { border-color: var(--accent-neon); }
+.artist-gig-card.official-lineup-gig {
+  border-color: rgba(255, 85, 0, 0.65);
+  background: linear-gradient(90deg, rgba(255, 85, 0, 0.12), #18181b 70%);
+}
+.artist-gig-card img { width: 42px; height: 42px; border-radius: 7px; object-fit: cover; }
+.gig-card-info strong { display: block; font-size: 12.5px; }
+.gig-card-info span { font-size: 11px; color: var(--text-muted); }
+.no-gigs-note { font-size: 12px; color: var(--text-muted); background: #18181b; padding: 10px; border-radius: 8px; }
+
+.gig-badges-col {
+  margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0;
+}
+.gig-official-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #ff5500; color: #fff; font-size: 9.5px; font-weight: 700;
+  padding: 3px 8px; border-radius: 99px; white-space: nowrap;
+}
+.gig-attending-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(34, 197, 94, 0.16); border: 1px solid rgba(34, 197, 94, 0.45);
+  color: #4ade80; font-size: 9.5px; font-weight: 700;
+  padding: 3px 8px; border-radius: 99px; white-space: nowrap;
+}
+.gig-live-now-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(239, 68, 68, 0.18); border: 1px solid #ef4444; color: #f87171;
+  font-size: 9.5px; font-weight: 700; padding: 3px 8px; border-radius: 99px; white-space: nowrap;
+}
+
+.dj-uploaded-player-box {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #18181b; border: 1px solid #ff5500; padding: 12px; border-radius: 12px;
+}
+.dj-uploaded-info { display: flex; align-items: center; gap: 10px; }
+.dj-uploaded-info strong { display: block; font-size: 12.5px; color: #fff; }
+.dj-uploaded-info span { font-size: 11px; color: #ff5500; }
+.spin-disc { animation: spin 4s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.btn-dj-mute {
+  display: flex; align-items: center; gap: 5px;
+  background: #ff5500; color: #fff; border: none; padding: 6px 11px;
+  border-radius: 99px; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+
+.artist-actions-bottom {
+  display: grid; grid-template-columns: 1fr 1.2fr; gap: 8px;
+}
+
+/* PUNTO 6: Reproductor de Barras Espectrales Cyberpunk */
+.cyber-wave-player {
+  background: linear-gradient(145deg, #15151a 0%, #0d0d11 100%);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.cyber-wave-player.is-playing {
+  border-color: var(--accent-neon);
+  box-shadow: 0 0 20px rgba(250, 204, 21, 0.16);
+}
+
+.cyber-wave-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cyber-play-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent-neon);
+  color: #09090b;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.45);
+  transition: transform 0.15s;
+}
+.cyber-play-btn:hover { transform: scale(1.08); }
+
+.cyber-track-meta {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cyber-track-meta strong {
+  font-size: 13px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cyber-track-meta span {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+.media-type-pill.track {
+  background: rgba(250, 204, 21, 0.16);
+  color: var(--accent-neon);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+}
+
+.cyber-bars-container {
+  height: 44px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  padding: 4px 2px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+}
+.cyber-wave-bar {
+  flex: 1;
+  background: #27272a;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s, transform 0.15s;
+}
+.cyber-wave-bar:hover {
+  background: #ff5500;
+}
+.cyber-wave-bar.filled {
+  background: linear-gradient(180deg, #facc15 0%, #ff5500 100%);
+  box-shadow: 0 0 6px rgba(250, 204, 21, 0.45);
+}
+.cyber-wave-player.is-playing .cyber-wave-bar.filled {
+  animation: waveBarBounce 0.6s infinite alternate ease-in-out;
+}
+@keyframes waveBarBounce {
+  0% { filter: brightness(1); transform: scaleY(0.92); }
+  100% { filter: brightness(1.25); transform: scaleY(1.06); }
+}
+
+.artist-badge-subgenre {
+  display: inline-flex; align-items: center;
+  background: rgba(255, 85, 0, 0.14); border: 1px solid rgba(255, 85, 0, 0.45);
+  color: #ff5500; padding: 3px 8px; border-radius: 6px; font-size: 10.5px; font-weight: 700;
+}
+
+.artist-socials-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.dj-social-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: #18181b; border: 1px solid var(--border-subtle);
+  color: #e4e4e7; padding: 5px 10px; border-radius: 8px;
+  font-size: 11px; font-weight: 700; text-decoration: none; transition: all 0.15s;
+}
+.dj-social-pill:hover {
+  border-color: var(--accent-neon); color: var(--accent-neon);
+}
+
+.sc-paused-by-gallery-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: rgba(255, 85, 0, 0.1); border: 1px dashed #ff5500;
+  padding: 12px; border-radius: 10px; font-size: 11.5px; color: #f4f4f5;
+}
+.sc-paused-by-gallery-bar button {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: #ff5500; color: #fff; border: none;
+  padding: 6px 11px; border-radius: 8px; font-size: 11px; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+}
+
+/* PUNTO 2: El Género Principal destaca en primer lugar con fondo amarillo neón */
+.artist-badge-main-genre {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--accent-neon);
+  color: #09090b;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  font-family: 'Space Grotesk';
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.35);
+}
+
+/* PUNTO 3: Tema Oscuro + Naranja para el reproductor de SoundCloud */
+.sc-iframe-wrap {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ff5500;
+  background: #121216;
+}
+.sc-iframe-dark {
+  display: block;
+  filter: invert(92%) hue-rotate(180deg) contrast(96%);
+}
+
+/* PUNTO 2: Tarjeta de evento en Secret Location dentro del panel del DJ */
+.artist-gig-card.secret-gig-card {
+  border-color: rgba(168, 85, 247, 0.55);
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.14), #18181b 75%);
+}
+.secret-gig-thumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 7px;
+  background: rgba(168, 85, 247, 0.2);
+  border: 1px dashed #a855f7;
+  color: #e9d5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Tarjeta de Información para Promotores y Clubs */
+.dj-promoter-booking-card {
+  background: linear-gradient(145deg, rgba(168, 85, 247, 0.14), rgba(18, 18, 24, 0.95));
+  border: 1px solid rgba(168, 85, 247, 0.55);
+  border-radius: 13px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dj-promoter-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #d8b4fe;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.dj-promoter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.dj-promoter-stat {
+  background: rgba(9, 9, 12, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 10px;
+  border-radius: 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.dj-prom-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #c084fc;
+  text-transform: uppercase;
+}
+.dj-promoter-stat strong {
+  font-size: 12.5px;
+  color: #fff;
+}
+.dj-promoter-stat small {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.dj-promoter-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dj-free-dates-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-height: 75px;
+  overflow-y: auto;
+}
+.dj-free-date-pill {
+  background: rgba(34, 197, 94, 0.16);
+  border: 1px solid #22c55e;
+  color: #4ade80;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.dj-no-dates-text {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* PUNTO 1: Pila de botones expandibles (Info Promotores/Clubs encima de Ver Sesiones) */
+.artist-expand-buttons-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.btn-toggle-dj-promoter {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(168, 85, 247, 0.14);
+  border: 1px solid #a855f7;
+  color: #d8b4fe;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.18s;
+}
+.btn-toggle-dj-promoter:hover,
+.btn-toggle-dj-promoter.active {
+  background: #a855f7;
+  color: #09090b;
+}
+
+.btn-toggle-dj-media {
+  margin-top: 0 !important;
+}
+
+/* ---------- Ranking local (medalla + hype) ---------- */
+.artist-ranking-box {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 12px; justify-content: flex-start;
+  padding: 12px; border-radius: 14px;
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(250, 204, 21, 0.16), transparent 55%),
+    linear-gradient(135deg, #17171d, #0f0f13);
+  border: 1px solid rgba(250, 204, 21, 0.28);
+}
+.rank-medal {
+  flex: 0 0 auto; width: 45px; height: 45px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 23px; font-weight: 700; letter-spacing: -0.02em; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #09090b;
+  background: linear-gradient(145deg, #fff3b0, #facc15 45%, #c98a00);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25), 0 6px 18px rgba(250, 204, 21, 0.3);
+}
+.rank-medal-hash { font-size: 13px; opacity: 0.6; margin-right: 1px; align-self: center; }
+.rank-tier-2 .rank-medal { background: linear-gradient(145deg, #ffffff, #d4d4d8 45%, #71717a); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3), 0 6px 18px rgba(212, 212, 216, 0.22); }
+.rank-tier-3 .rank-medal { background: linear-gradient(145deg, #fed7aa, #f59e0b 45%, #9a3412); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 6px 18px rgba(245, 158, 11, 0.25); }
+.rank-tier-x .rank-medal { background: #18181b; color: var(--accent-neon); box-shadow: inset 0 0 0 1px rgba(250, 204, 21, 0.45); }
+.rank-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.rank-kicker {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #a1a1aa;
+}
+.rank-kicker svg { color: var(--accent-neon); }
+.rank-copy strong { font-size: 15px; font-weight: 700; color: #fff; line-height: 1.15; overflow-wrap: anywhere; }
+.rank-hype { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: #d4d4d8; }
+.rank-hype svg { color: #ff5500; }
+.rank-hype b { color: #ff7a33; font-weight: 700; font-variant-numeric: tabular-nums; }
+.artist-ranking-box .btn-give-hype {
+  flex-shrink: 0; white-space: nowrap;
+  padding: 9px 12px; border-radius: 10px;
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.35);
+}
+.artist-ranking-box .btn-give-hype.is-hyped { box-shadow: none; }

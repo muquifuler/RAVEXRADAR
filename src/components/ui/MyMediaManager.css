@@ -1,0 +1,141 @@
+/* src/components/ui/MyMediaManager.css */
+.mm-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.mm-empty {
+  font-size: 12px;
+  color: #71717a;
+  text-align: center;
+  padding: 12px;
+  border: 1px dashed var(--border-subtle);
+  border-radius: 12px;
+}
+
+.mm-card {
+  --mm-accent: #facc15;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 8px 8px 8px 8px;
+  border-radius: 14px;
+  background: #18181b;
+  border: 1px solid var(--border-subtle);
+  transition: border-color 0.2s;
+}
+.mm-card:hover { border-color: color-mix(in srgb, var(--mm-accent) 55%, transparent); }
+.mm-card.is-new {
+  border-color: #22c55e;
+  animation: mmNew 2.4s ease-out 1;
+}
+@keyframes mmNew {
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+  100% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+}
+
+.mm-thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--mm-accent) 14%, #101014);
+  border: 1px solid color-mix(in srgb, var(--mm-accent) 45%, transparent);
+  color: var(--mm-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mm-thumb img,
+.mm-thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.mm-thumb-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+}
+
+.mm-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mm-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.mm-meta small { font-size: 10.5px; color: #71717a; white-space: nowrap; }
+.mm-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 99px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mm-accent);
+  background: color-mix(in srgb, var(--mm-accent) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--mm-accent) 45%, transparent);
+  white-space: nowrap;
+}
+.mm-new {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #22c55e;
+  white-space: nowrap;
+}
+.mm-info strong {
+  font-size: 12.5px;
+  color: #fafafa;
+  line-height: 1.3;
+  /* Títulos largos: dos líneas como máximo, sin scroll */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+/* Subiendo */
+.mm-card.is-uploading { border-style: dashed; }
+.mm-card.is-uploading .mm-info small { font-size: 10.5px; color: #71717a; }
+.mm-spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(250, 204, 21, 0.25);
+  border-top-color: var(--accent-neon);
+  animation: mmSpin 0.7s linear infinite;
+}
+@keyframes mmSpin { to { transform: rotate(360deg); } }
+
+/* El botón de borrar de OwnerDeleteButton, dentro de la tarjeta */
+.mm-card .owner-delete-btn.is-inline,
+.mm-card .owner-delete-confirm.is-inline { margin-left: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mm-card.is-new, .mm-spinner { animation: none; }
+}

@@ -1,0 +1,131 @@
+/* RUTA COMPLETA: houseoftechno/src/components/ui/RaveVideo.css
+   Reproductor de vídeo propio de RAVEXRADAR */
+.rv {
+  --rv-accent: #facc15;
+  position: relative;
+  display: block;
+  width: 100%;
+  line-height: 0;
+  background: #000;
+  outline: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.rv:focus-visible { box-shadow: inset 0 0 0 2px var(--rv-accent); }
+.rv > video { display: block; width: 100%; cursor: pointer; }
+.rv > video::-webkit-media-controls { display: none !important; }
+.rv.is-idle, .rv.is-idle > video { cursor: none; }
+
+/* ---------- Botón central ---------- */
+.rv-big {
+  position: absolute; left: 50%; top: 50%; z-index: 3;
+  width: 58px; height: 58px; margin: -29px 0 0 -29px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--rv-accent); color: #09090b; border: 0; cursor: pointer;
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--rv-accent) 55%, transparent), 0 10px 30px rgba(0, 0, 0, 0.55);
+  animation: rv-pulse 2s ease-out infinite;
+  transition: transform 0.15s ease;
+}
+.rv-big svg { margin-left: 3px; }
+.rv-big:hover { transform: scale(1.07); }
+.rv-big:active { transform: scale(0.96); }
+@keyframes rv-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--rv-accent) 55%, transparent), 0 10px 30px rgba(0, 0, 0, 0.55); }
+  100% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--rv-accent) 0%, transparent), 0 10px 30px rgba(0, 0, 0, 0.55); }
+}
+.rv.is-compact .rv-big { width: 46px; height: 46px; margin: -23px 0 0 -23px; }
+
+/* ---------- Cargando ---------- */
+.rv-spinner {
+  position: absolute; left: 50%; top: 50%; z-index: 3;
+  width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.15); border-top-color: var(--rv-accent);
+  animation: rv-spin 0.8s linear infinite;
+}
+@keyframes rv-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Barra inferior ---------- */
+.rv-bar {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 4;
+  padding: 26px 12px 8px;
+  background: linear-gradient(180deg, transparent, rgba(9, 9, 11, 0.6) 40%, rgba(9, 9, 11, 0.92));
+  line-height: 1.2;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.rv.is-idle .rv-bar { opacity: 0; transform: translateY(6px); pointer-events: none; }
+
+.rv-track {
+  position: relative; height: 16px; display: flex; align-items: center;
+  cursor: pointer; touch-action: none; outline: none;
+}
+.rv-track-bg {
+  position: relative; width: 100%; height: 4px; border-radius: 99px; overflow: hidden;
+  background: rgba(255, 255, 255, 0.16);
+  transition: height 0.15s ease;
+}
+.rv-track:hover .rv-track-bg, .rv-track:focus-visible .rv-track-bg { height: 6px; }
+.rv-buffer { position: absolute; inset: 0 auto 0 0; background: rgba(255, 255, 255, 0.22); border-radius: 99px; }
+.rv-fill {
+  position: absolute; inset: 0 auto 0 0; border-radius: 99px;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--rv-accent) 70%, #fff), var(--rv-accent));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--rv-accent) 70%, transparent);
+}
+.rv-knob {
+  position: absolute; top: 50%; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-radius: 50%;
+  background: #fff; border: 3px solid var(--rv-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--rv-accent) 80%, transparent);
+  transform: scale(0); transition: transform 0.15s ease; pointer-events: none;
+}
+.rv-track:hover .rv-knob, .rv-track:active .rv-knob, .rv-track:focus-visible .rv-knob { transform: scale(1); }
+@media (hover: none) { .rv-knob { transform: scale(0.85); } }
+.rv-hover-time {
+  position: absolute; bottom: 18px; transform: translateX(-50%);
+  background: #09090b; border: 1px solid color-mix(in srgb, var(--rv-accent) 55%, transparent);
+  color: #fff; font-size: 11px; font-weight: 700; padding: 3px 6px; border-radius: 6px;
+  font-variant-numeric: tabular-nums; pointer-events: none; white-space: nowrap;
+}
+
+.rv-row { display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+.rv-btn {
+  width: 34px; height: 34px; border-radius: 10px; border: 0; background: transparent;
+  color: #f4f4f5; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+  flex-shrink: 0; transition: background 0.15s, color 0.15s;
+}
+.rv-btn:hover, .rv-btn:focus-visible { background: rgba(255, 255, 255, 0.1); color: var(--rv-accent); outline: none; }
+.rv-time {
+  font-size: 12px; font-weight: 700; color: #f4f4f5; margin-left: 4px; white-space: nowrap;
+  font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
+}
+.rv-time i { font-style: normal; color: #71717a; margin: 0 2px; }
+.rv-spacer { flex: 1; }
+
+/* Volumen */
+.rv-vol { display: flex; align-items: center; }
+.rv-vol-range {
+  -webkit-appearance: none; appearance: none;
+  width: 0; opacity: 0; height: 4px; margin: 0; border-radius: 99px; cursor: pointer;
+  background: linear-gradient(90deg, var(--rv-accent) var(--rv-vol, 100%), rgba(255, 255, 255, 0.2) var(--rv-vol, 100%));
+  transition: width 0.2s ease, opacity 0.2s ease, margin 0.2s ease;
+}
+.rv-vol:hover .rv-vol-range, .rv-vol-range:focus-visible { width: 72px; opacity: 1; margin: 0 6px 0 2px; }
+.rv-vol-range::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
+  background: #fff; border: 2px solid var(--rv-accent);
+}
+.rv-vol-range::-moz-range-thumb {
+  width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 2px solid var(--rv-accent);
+}
+
+/* Tarjetas pequeñas */
+.rv.is-compact .rv-bar { padding: 22px 8px 6px; }
+.rv.is-compact .rv-btn { width: 30px; height: 30px; }
+.rv.is-compact .rv-time { font-size: 11px; }
+
+/* Pantalla completa */
+.rv.is-fs { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+.rv.is-fs > video { width: 100%; height: 100%; max-height: none !important; object-fit: contain !important; border-radius: 0 !important; }
+.rv.is-fs .rv-bar { padding: 40px 24px 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rv-big { animation: none; }
+}

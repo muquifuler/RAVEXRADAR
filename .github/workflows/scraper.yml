@@ -1,0 +1,28 @@
+name: RaveRadar Daily Techno Scraper
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # Se ejecuta todos los días a las 06:00 UTC
+  workflow_dispatch:     # Permite ejecutarlo también con un botón manual en GitHub
+
+jobs:
+  sync-events:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm install
+
+      - name: Ejecutar Scraper y guardar en Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
+        run: node server.mjs

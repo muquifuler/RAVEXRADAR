@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#09090b" />
+
+    <!-- SEO básico -->
+    <title>RAVEXRADAR · Mapa de raves y fiestas techno en España</title>
+    <meta name="description" content="Encuentra raves y fiestas techno cerca de ti en un mapa: DJs, clubs y promotores de toda España. Marca «Voy a ir», busca tu Rave Squad y entra gratis." />
+    <link rel="canonical" href="https://ravexradar.com/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <!-- Pega aquí la etiqueta de verificación de Google Search Console si eliges ese método:
+    <meta name="google-site-verification" content="TU_CODIGO" /> -->
+
+    <!-- Iconos y app instalable -->
+    <link rel="icon" type="image/svg+xml" href="/ravexradar-icono.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <!-- iPhone / iPad: icono y aspecto al añadirla a la pantalla de inicio -->
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="RAVEXRADAR" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Vista previa al compartir (WhatsApp, Instagram, X, Telegram…) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RAVEXRADAR" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:url" content="https://ravexradar.com/" />
+    <meta property="og:title" content="RAVEXRADAR · El mapa del techno en España" />
+    <meta property="og:description" content="Raves, DJs, clubs y promotores en un solo mapa. Marca «Voy a ir» y no vayas solo." />
+    <meta property="og:image" content="https://ravexradar.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="RAVEXRADAR, el mapa del techno en España" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="RAVEXRADAR · El mapa del techno en España" />
+    <meta name="twitter:description" content="Raves, DJs, clubs y promotores en un solo mapa. Marca «Voy a ir» y no vayas solo." />
+    <meta name="twitter:image" content="https://ravexradar.com/og-image.png" />
+
+    <!-- Fuentes: cargadas aquí (antes iban con @import en index.css, que retrasa la carga) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Syne:wght@400..800&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" />
+
+    <!-- Datos estructurados para Google -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://ravexradar.com/#website",
+            "url": "https://ravexradar.com/",
+            "name": "RAVEXRADAR",
+            "inLanguage": "es-ES",
+            "publisher": { "@id": "https://ravexradar.com/#organization" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://ravexradar.com/#organization",
+            "name": "RAVEXRADAR",
+            "url": "https://ravexradar.com/",
+            "logo": "https://ravexradar.com/ravexradar-icono.svg"
+          },
+          {
+            "@type": "WebApplication",
+            "name": "RAVEXRADAR",
+            "url": "https://ravexradar.com/",
+            "applicationCategory": "EntertainmentApplication",
+            "operatingSystem": "Web",
+            "inLanguage": "es-ES",
+            "description": "Mapa de raves y fiestas techno en España con DJs, clubs y promotores.",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+          }
+        ]
+      }
+    </script>
+
+        <style>
+      /* Pantalla de carga: se ve mientras arranca la app y luego se desvanece */
+      html, body { margin: 0; background: #09090b; }
+      #app-loader {
+        position: fixed; inset: 0; z-index: 9999;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+        padding: 24px; box-sizing: border-box; text-align: center;
+        background: radial-gradient(600px 420px at 50% 42%, rgba(250, 204, 21, 0.08), transparent 70%), #09090b;
+        color: #a1a1aa; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        transition: opacity 0.45s ease, visibility 0.45s ease;
+      }
+      #app-loader.is-hidden { opacity: 0; visibility: hidden; }
+      .loader-mark { position: relative; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; }
+      .loader-mark svg { position: relative; z-index: 2; width: 92px; height: 92px; animation: loaderBob 1.6s ease-in-out infinite; }
+      .loader-ring {
+        position: absolute; left: 50%; bottom: 10px; width: 70px; height: 20px; margin-left: -35px;
+        border: 2px solid #facc15; border-radius: 50%; opacity: 0; animation: loaderRipple 1.8s ease-out infinite;
+      }
+      .loader-ring:nth-child(2) { animation-delay: 0.6s; }
+      .loader-ring:nth-child(3) { animation-delay: 1.2s; }
+      .loader-title { margin: 0; font-size: 26px; font-weight: 800; letter-spacing: 0.08em; color: #fafafa;  }
+      .loader-title span { color: #facc15; }
+      .loader-sub { margin: -10px 0 0; max-width: 300px; font-size: 13px; line-height: 1.5; }
+      .loader-bar { width: 160px; height: 3px; border-radius: 99px; background: #1f1f25; overflow: hidden; }
+      .loader-bar::after {
+        content: ""; display: block; width: 40%; height: 100%; border-radius: 99px; background: #facc15;
+        animation: loaderBar 1.2s ease-in-out infinite;
+      }
+      @keyframes loaderBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+      @keyframes loaderRipple { 0% { transform: scale(0.4); opacity: 0.9; } 100% { transform: scale(1.9); opacity: 0; } }
+      @keyframes loaderBar { 0% { transform: translateX(-110%); } 100% { transform: translateX(260%); } }
+      @media (prefers-reduced-motion: reduce) {
+        .loader-mark svg, .loader-ring, .loader-bar::after { animation: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Pantalla de carga (con texto real: lo leen Google y quien no tenga JavaScript) -->
+    <div id="app-loader" role="status" aria-live="polite">
+      <div class="loader-mark" aria-hidden="true">
+        <span class="loader-ring"></span>
+        <span class="loader-ring"></span>
+        <span class="loader-ring"></span>
+        <svg viewBox="18 18 84 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60 106 C44 88 30 72 30 50 A30 30 0 0 1 90 50 C90 72 76 88 60 106 Z M60 37 A13 13 0 1 0 60 63 A13 13 0 1 0 60 37 Z" fill="#FACC15" fill-rule="evenodd"/>
+          <circle cx="60" cy="50" r="6" fill="#FACC15"/>
+        </svg>
+      </div>
+      <h1 class="loader-title">RAVEX<span>RADAR</span></h1>
+      <p class="loader-sub">El mapa de raves y fiestas techno en España: DJs, clubs y promotores en un solo sitio.</p>
+      <div class="loader-bar" aria-hidden="true"></div>
+      <noscript><p class="loader-sub">Activa JavaScript para usar el mapa de RAVEXRADAR.</p></noscript>
+    </div>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

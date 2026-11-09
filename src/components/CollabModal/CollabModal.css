@@ -1,0 +1,336 @@
+/* src/components/CollabModal/CollabModal.css */
+.collab-modal-card {
+  max-width: 860px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.collab-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-right: 32px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 12px;
+}
+/* Cabecera con icono en caja: estilos comunes en App.css (.modal-icon-header) */
+.collab-title-group { flex: 1 1 320px; }
+
+.collab-tab-body {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 4px;
+}
+
+.collab-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #18181b;
+  border: 1px solid var(--border-subtle);
+  padding: 0 12px;
+  border-radius: 10px;
+}
+.collab-search-bar input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 10px 0;
+  font-size: 13px;
+  outline: none;
+}
+
+.collab-offers-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.collab-offer-card {
+  background: #141418;
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.collab-offer-card.is-closed {
+  opacity: 0.68;
+}
+.collab-offer-banner {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.collab-offer-content {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.collab-offer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.collab-creator-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #18181b;
+  border: 1px solid var(--border-subtle);
+  color: #fff;
+  padding: 4px 10px 4px 5px;
+  border-radius: 99px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.collab-creator-pill img {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.collab-targets-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.collab-target-tag {
+  background: rgba(250, 204, 21, 0.14);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+  color: var(--accent-neon);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 99px;
+}
+.collab-status-pill {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 99px;
+}
+.collab-status-pill.active {
+  background: rgba(34, 197, 94, 0.16);
+  color: #4ade80;
+}
+.collab-status-pill.closed {
+  background: rgba(239, 68, 68, 0.16);
+  color: #f87171;
+}
+
+.collab-offer-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+.collab-offer-desc {
+  font-size: 13px;
+  color: #d4d4d8;
+  line-height: 1.45;
+  white-space: pre-line;
+}
+
+.btn-collab-chat-open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: rgba(34, 197, 94, 0.16);
+  border: 1px solid #22c55e;
+  color: #4ade80;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.collab-manage-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #141418;
+  border: 1px solid var(--border-subtle);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.collab-offer-form-box {
+  background: #18181b;
+  border: 1.5px solid var(--accent-neon);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.collab-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--accent-neon);
+  font-size: 14px;
+}
+.collab-form-header button {
+  background: none;
+  border: none;
+  color: #a1a1aa;
+  cursor: pointer;
+}
+
+.collab-target-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.collab-checks-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.collab-check-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #121216;
+  border: 1px solid var(--border-subtle);
+  color: #a1a1aa;
+  padding: 7px 12px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.collab-check-pill input { display: none; }
+.collab-check-pill.checked {
+  background: rgba(250, 204, 21, 0.16);
+  border-color: var(--accent-neon);
+  color: var(--accent-neon);
+}
+
+.btn-collab-mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #18181b;
+  border: 1px solid var(--border-subtle);
+  color: #e4e4e7;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-collab-mini.neon {
+  border-color: var(--accent-neon);
+  color: var(--accent-neon);
+}
+
+.collab-linked-users-box {
+  background: #0d0d11;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.collab-no-links {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+.collab-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.collab-link-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #18181b;
+  padding: 8px 10px;
+  border-radius: 9px;
+}
+.collab-link-user {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  flex: 1;
+}
+.collab-link-user img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.collab-link-msg {
+  font-size: 11.5px;
+  color: #a1a1aa;
+  margin-top: 2px;
+}
+.collab-dir-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 99px;
+}
+.collab-dir-badge.applied {
+  background: rgba(34, 197, 94, 0.16);
+  color: #4ade80;
+}
+.collab-dir-badge.invited {
+  background: rgba(6, 182, 212, 0.16);
+  color: #67e8f9;
+}
+
+.collab-directory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.collab-submodal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.collab-submodal-card {
+  width: 100%;
+  max-width: 440px;
+  background: #141418;
+  border: 1.5px solid var(--accent-neon);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

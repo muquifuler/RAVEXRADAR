@@ -1,0 +1,1426 @@
+/* ==========================================================================
+   00. ELEMENTOS SOLO-MÓVIL (ocultos en escritorio)
+   ========================================================================== */
+.nav-mobile-label,
+.nav-btn-more,
+.nav-more-backdrop,
+.nav-more-sheet { display: none; }
+
+
+/* ==========================================================================
+   0. BASE TÁCTIL (todos los tamaños con pantalla táctil)
+   ========================================================================== */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  * { -webkit-tap-highlight-color: transparent; }
+
+  button, a, label, [role="button"] { touch-action: manipulation; }
+
+  /* Los hovers con transform se "quedan pegados" en táctil: los anulamos */
+  .top-widget-item:hover,
+  .lineup-dj-card.is-clickable:hover,
+  .nav-btn-publish:hover,
+  .nav-btn-locate-me:hover,
+  .fab-add-rave:hover,
+  .promoter-user-chip:hover,
+  .cyber-play-btn:hover { transform: none; }
+
+  /* Feedback al pulsar en su lugar */
+  button:active { transform: scale(0.96); transition: transform 0.08s ease; }
+
+  ::-webkit-scrollbar { width: 0; height: 0; }
+}
+
+
+/* ==========================================================================
+   1. MÓVIL  (≤ 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* ---------- 1.1 Variables de layout ---------- */
+  :root {
+    --m-safe-top: env(safe-area-inset-top, 0px);
+    --m-safe-bottom: env(safe-area-inset-bottom, 0px);
+    --m-gap: 8px;
+    --m-nav-h: 102px;            /* alto real de la navbar: buscador + fila de 2 filtros */
+    --m-nav-bottom: calc(var(--m-safe-top) + var(--m-gap) + var(--m-nav-h));
+    --m-tab-h: 64px;             /* alto de la tab bar inferior */
+    --m-tab-total: calc(var(--m-tab-h) + var(--m-safe-bottom));
+    --m-sheet-radius: 22px;
+    --m-glass: rgba(10, 10, 13, 0.94);
+    --m-glow: 0 0 22px rgba(250, 204, 21, 0.35);
+  }
+
+  /* ---------- 1.2 Shell ---------- */
+  body { overscroll-behavior: none; }
+
+  .app-shell {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  /* Evita el zoom automático de iOS al enfocar inputs */
+  input, select, textarea { font-size: 16px !important; }
+
+  /* Scroll suave y contenido dentro de los paneles */
+  .drawer-body,
+  .artist-drawer-body,
+  .club-media-scroll-body,
+  .artist-media-feed,
+  .drawer-chat-messages,
+  .dock-messages,
+  .dock-list-view,
+  .dock-rooms-list,
+  .collab-tab-body,
+  .modal-card {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  .hide-mobile { display: none !important; }
+
+
+  /* ======================================================================
+     1.3 NAVBAR SUPERIOR
+     Fila 1: logo + buscador · Fila 2: los dos filtros al 50%
+     ====================================================================== */
+  .navbar-pro {
+    top: calc(var(--m-safe-top) + var(--m-gap));
+    left: var(--m-gap);
+    right: var(--m-gap);
+    z-index: 32;                    /* por encima de las capas y el FAB del chat */
+    padding: 8px;
+    gap: 8px;
+    border-radius: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+    /* Sin blur: sobre el mapa (claro) el desenfoque la dejaba grisácea al soltar.
+       Además el blur aquí atraparía la tab bar y el panel "Más" (position:fixed). */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(12, 12, 15, 0.95);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.7);
+  }
+  /* Línea neón inferior */
+  .navbar-pro::after {
+    content: "";
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-neon), #ff5500, transparent);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .navbar-brand {
+    flex: 0 0 auto;
+    margin-right: 0;
+    height: 40px;
+    gap: 8px;
+  }
+  .brand-mark { width: 34px; height: 34px; border-radius: 10px; }
+  .brand-mark svg { width: 21px; height: 21px; }
+
+  /* Buscador: ocupa el resto de la fila 1 */
+  .navbar-pro .pro-autocomplete {
+    flex: 1 1 0;
+    min-width: 0;
+    position: static;               /* el dropdown se ancla a la navbar entera */
+  }
+  .navbar-pro .pro-search-input-wrap {
+    height: 40px;
+    border-radius: 12px;
+  }
+  .navbar-pro .pro-search-input-wrap input { padding: 0; height: 100%; }
+  .navbar-pro .pro-autocomplete-dropdown {
+    left: 0;
+    right: 0;
+    top: calc(100% + 6px);
+    max-height: 58vh;
+    max-height: 58dvh;
+    overflow-y: auto;
+    border-radius: 16px;
+  }
+  .autocomplete-option { padding: 9px 8px; }
+
+  /* Filtros: los dos en la misma fila, al 50% */
+  .navbar-filters {
+    width: 100%;
+    flex: 1 1 100%;
+    gap: 8px;
+  }
+  .navbar-filters > * { flex: 1; min-width: 0; }
+  .navbar-filters .pro-select { min-width: 0; }
+  .navbar-filters .pro-select-trigger {
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 12px;
+  }
+  /* El menú puede ser más ancho que su select (media pantalla) para no cortar
+     nombres de género; el de la derecha se alinea a la derecha */
+  .navbar-filters .pro-select-menu {
+    left: 0;
+    right: auto;
+    width: max-content;
+    min-width: 100%;
+    max-width: calc(100vw - 32px);
+    max-height: 50vh;
+    max-height: 50dvh;
+    border-radius: 14px;
+  }
+  .navbar-filters > :last-child .pro-select-menu { left: auto; right: 0; }
+  .pro-select-item { padding: 11px 12px; font-size: 13.5px; }
+
+
+  /* ======================================================================
+     1.4 TAB BAR INFERIOR  (antes .navbar-actions)
+     Máximo 5 huecos, todos con icono + texto, sin scroll:
+       Ranking · Avisos · [Publicar] · Perfil · Más
+     Colaboraciones, Soporte, Idioma, Mi posición y Admin → panel "Más"
+     ====================================================================== */
+  .navbar-actions {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    margin: 0;
+    height: var(--m-tab-total);
+    padding: 6px 4px calc(6px + var(--m-safe-bottom));
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    gap: 0;
+    overflow: visible;
+    background: var(--m-glass);
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.7);
+  }
+
+  /* Línea neón superior */
+  .navbar-actions::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 5%, rgba(250, 204, 21, 0.6), rgba(255, 85, 0, 0.6), transparent 95%);
+    pointer-events: none;
+  }
+
+  /* Fuera de la barra: van al panel "Más" */
+  .navbar-actions .nav-extra { display: none !important; }
+
+  /* Etiquetas: en móvil solo la versión corta */
+  .navbar-actions .nav-desktop-label { display: none !important; }
+  .navbar-actions .nav-mobile-label { display: block; }
+
+  /* El wrapper de perfil + localizar tiene display:flex inline: lo aplanamos */
+  .navbar-actions > div:not(.nav-bell-wrapper) { display: contents !important; }
+
+  /* Orden fijo de los huecos */
+  .navbar-actions > .nav-btn-ranking { order: 1; }
+  .navbar-actions > .nav-bell-wrapper { order: 2; }
+  .navbar-actions .nav-btn-publish { order: 3; }
+  .navbar-actions .nav-btn-profile,
+  .navbar-actions .nav-btn-login { order: 4; }
+  .navbar-actions .nav-btn-more { order: 5; }
+
+  /* Item tipo: icono en "píldora" arriba + texto abajo, todos iguales */
+  .navbar-actions .nav-btn-publish,
+  .navbar-actions .nav-btn-ranking,
+  .navbar-actions .nav-btn-profile,
+  .navbar-actions .nav-btn-login,
+  .navbar-actions .nav-btn-bell,
+  .navbar-actions .nav-btn-more {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    padding: 0 2px;
+    border-radius: 14px;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: var(--text-muted);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    animation: none;
+  }
+  .navbar-actions .nav-mobile-label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .navbar-actions button > svg {
+    box-sizing: border-box;
+    width: 46px;
+    height: 30px;
+    padding: 6px 0;
+    border-radius: 99px;
+    flex-shrink: 0;
+    transition: background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  /* Ranking: acento amarillo */
+  .navbar-actions .nav-btn-ranking { color: var(--accent-neon); }
+
+  /* Publicar: mismo esquema, pero con la píldora en neón */
+  .navbar-actions .nav-btn-publish { color: var(--accent-neon); }
+  .navbar-actions .nav-btn-publish > svg {
+    background: var(--accent-neon);
+    color: #09090b;
+    animation: mPublishPulse 2.6s ease-in-out infinite;
+  }
+
+  /* Entrar (sin sesión): píldora con contorno neón */
+  .navbar-actions .nav-btn-login { color: var(--accent-neon); }
+  .navbar-actions .nav-btn-login > svg {
+    background: rgba(250, 204, 21, 0.12);
+    box-shadow: inset 0 0 0 1px rgba(250, 204, 21, 0.55);
+  }
+
+  /* Perfil: el avatar ocupa el sitio del icono */
+  .navbar-actions .nav-btn-profile { color: var(--text-secondary); }
+  .navbar-actions .nav-avatar-img {
+    width: 30px;
+    height: 30px;
+    border-width: 1.5px;
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.35);
+  }
+
+  /* Campana */
+  .navbar-actions .nav-bell-wrapper { display: flex; flex: 1 1 0; min-width: 0; }
+  .navbar-actions .nav-btn-bell { width: 100%; color: var(--text-secondary); }
+  .navbar-actions .nav-btn-bell.has-notifs { color: var(--accent-neon); }
+  .navbar-actions .nav-bell-badge {
+    top: 3px;
+    right: auto;
+    left: calc(50% + 8px);
+    min-width: 17px;
+    width: auto;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: 99px;
+    font-size: 9.5px;
+  }
+
+  /* Más */
+  .navbar-actions .nav-btn-more { color: var(--text-secondary); }
+  .navbar-actions .nav-btn-more.is-active { color: var(--accent-neon); }
+  .navbar-actions .nav-btn-more.is-active > svg {
+    background: rgba(250, 204, 21, 0.14);
+    box-shadow: inset 0 0 0 1px rgba(250, 204, 21, 0.45);
+  }
+
+  /* Dropdown de notificaciones → panel que sube desde la tab bar */
+  .nav-notifications-dropdown {
+    position: fixed;
+    top: auto;
+    left: var(--m-gap);
+    right: var(--m-gap);
+    bottom: calc(var(--m-tab-total) + var(--m-gap));
+    width: auto;
+    max-height: 62vh;
+    max-height: 62dvh;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    padding: 14px;
+    animation: mSheetUp 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .nav-notifications-dropdown .notif-list { max-height: none; flex: 1; }
+  .notif-item { padding: 10px 12px; }
+  .btn-notif-accept, .btn-notif-reject { width: 36px; height: 36px; border-radius: 10px; }
+
+
+  /* ---------- Panel "Más" ---------- */
+  .nav-more-backdrop {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: var(--m-tab-total);
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    animation: mFadeIn 0.2s ease;
+  }
+  .nav-more-sheet {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: fixed;
+    left: var(--m-gap);
+    right: var(--m-gap);
+    bottom: calc(var(--m-tab-total) + var(--m-gap));
+    z-index: 2;
+    max-height: 70vh;
+    max-height: 70dvh;
+    overflow-y: auto;
+    padding: 16px 12px 12px;
+    border-radius: 22px;
+    background: linear-gradient(160deg, rgba(250, 204, 21, 0.06), transparent 40%), #111115;
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
+    animation: mSheetUp 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .nav-more-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0 4px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .nav-more-head strong { font-size: 15px; color: #fff; }
+  .nav-more-head span {
+    font-size: 9.5px;
+    letter-spacing: 1.6px;
+    color: var(--accent-neon);
+    opacity: 0.7;
+  }
+  .nav-more-grid { display: flex; flex-direction: column; gap: 6px; }
+
+  .nav-more-item {
+    --tone: var(--accent-neon);
+    --tone-bg: rgba(250, 204, 21, 0.12);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 58px;
+    padding: 9px 12px 9px 9px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(24, 24, 29, 0.85);
+    color: #fff;
+    text-align: left;
+    cursor: pointer;
+  }
+  .nav-more-item:active { border-color: var(--tone); background: var(--tone-bg); }
+  .nav-more-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--tone);
+    background: var(--tone-bg);
+    border: 1px solid color-mix(in srgb, var(--tone) 40%, transparent);
+  }
+  .nav-more-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .nav-more-text strong { font-size: 14px; }
+  .nav-more-text small { font-size: 11.5px; color: var(--text-muted); }
+  .nav-more-chevron { color: #52525b; flex-shrink: 0; }
+  .nav-more-lang-pill {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 99px;
+    color: var(--accent-neon);
+    background: rgba(250, 204, 21, 0.1);
+    border: 1px solid rgba(250, 204, 21, 0.35);
+  }
+
+  .nav-more-item.tone-cyan     { --tone: #06b6d4; --tone-bg: rgba(6, 182, 212, 0.13); }
+  .nav-more-item.tone-dj       { --tone: #ff5500; --tone-bg: rgba(255, 85, 0, 0.13); }
+  .nav-more-item.tone-club     { --tone: #06b6d4; --tone-bg: rgba(6, 182, 212, 0.13); }
+  .nav-more-item.tone-promotor { --tone: #f43f5e; --tone-bg: rgba(244, 63, 94, 0.13); }
+  .nav-more-item.tone-red      { --tone: #ef4444; --tone-bg: rgba(239, 68, 68, 0.13); }
+  .nav-more-item.tone-neutral  { --tone: #d4d4d8; --tone-bg: rgba(255, 255, 255, 0.06); }
+
+
+  /* ======================================================================
+     1.5 TOP EVENTOS
+     Plegado: pastilla compacta bajo la navbar.
+     Desplegado: tarjeta con la lista en columna (como en escritorio).
+     ====================================================================== */
+  .top-events-widget {
+    top: calc(var(--m-nav-bottom) + var(--m-gap));
+    left: var(--m-gap);
+    right: auto;
+    width: min(300px, calc(100vw - 2 * var(--m-gap)));
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+  }
+  .top-events-widget.is-collapsed { width: auto; }
+
+  .top-widget-header {
+    padding: 9px 12px;
+    gap: 10px;
+  }
+  .top-events-widget.is-collapsed .top-widget-header { padding: 8px 12px; }
+  .top-widget-title { font-size: 10.5px; gap: 6px; }
+  .top-widget-title > strong { font-size: 13px; }
+
+  .top-widget-list {
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px;
+    max-height: 46vh;
+    max-height: 46dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    animation: mFadeIn 0.18s ease;
+  }
+  .top-widget-list::-webkit-scrollbar { display: none; }
+  .top-widget-item {
+    width: 100%;
+    min-height: 50px;
+    padding: 6px 8px;
+  }
+  .top-widget-thumb { width: 38px; height: 38px; border-radius: 9px; }
+
+
+  /* ======================================================================
+     1.6 HUD DE CAPAS → chips horizontales sobre la tab bar
+     ====================================================================== */
+  .bottom-left-controls {
+    position: fixed;
+    left: var(--m-gap);
+    right: 78px;                                   /* deja hueco al FAB del chat */
+    bottom: calc(var(--m-tab-total) + 18px);
+    gap: 8px;
+  }
+  .radar-layers-hud {
+    width: 100%;
+    flex-direction: row;
+    gap: 6px;
+    padding: 6px;
+    border-radius: 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: rgba(11, 11, 15, 0.9);
+  }
+  .radar-layers-hud::-webkit-scrollbar { display: none; }
+  .radar-layers-header,
+  .hud-layer-info span,
+  .hud-layer-check { display: none; }
+
+  .hud-layer-card {
+    flex: 0 0 auto;
+    gap: 7px;
+    padding: 5px 11px 5px 5px;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .hud-layer-icon-box { width: 28px; height: 28px; border-radius: 50%; }
+  .hud-layer-info strong { font-size: 12px; white-space: nowrap; }
+
+  /* Picking mode: el banner sustituye a los widgets superiores */
+  .picking-banner,
+  .picking-hud-banner {
+    top: calc(var(--m-nav-bottom) + var(--m-gap));
+    left: var(--m-gap);
+    right: var(--m-gap);
+    transform: none;
+    width: auto;
+    padding: 10px 12px;
+    gap: 10px;
+    border-radius: 16px;
+  }
+  .picking-hud-text strong { font-size: 10.5px; }
+  .picking-hud-text span { font-size: 12px; line-height: 1.3; }
+  .btn-cancel-picking { margin-left: auto; flex-shrink: 0; padding: 8px 10px; }
+  .app-shell.picking-mode-active .top-events-widget,
+  .app-shell.picking-mode-active .bottom-left-controls { opacity: 0; pointer-events: none; }
+  .map-picking-frame-overlay { border-width: 3px; }
+
+  /* FAB antiguo de subir fiesta (si se usa) */
+  .fab-add-rave { padding: 12px 18px; font-size: 13px; }
+
+
+  /* ======================================================================
+     1.7 CHAT SOCIAL (SocialDock)
+     ====================================================================== */
+  .social-dock-fab {
+    left: auto;
+    right: 14px;
+    bottom: calc(var(--m-tab-total) + 14px);
+    transform: none;
+    width: 54px;
+    height: 54px;
+    border: 1.5px solid rgba(250, 204, 21, 0.55);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.7), 0 0 20px rgba(250, 204, 21, 0.35);
+  }
+  .social-dock-fab:hover { transform: none; }
+
+  .social-dock-popup {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    height: 90vh;
+    height: 90dvh;
+    max-height: none;
+    border-radius: var(--m-sheet-radius) var(--m-sheet-radius) 0 0;
+    border-bottom: none;
+    z-index: 45;
+    padding-bottom: var(--m-safe-bottom);
+    animation: mSheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .dock-header {
+    position: relative;
+    padding: 18px 10px 10px 12px;
+    gap: 8px;
+  }
+  /* Asa del sheet */
+  .dock-header::before {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    width: 38px;
+    height: 4px;
+    margin-left: -19px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.18);
+  }
+  .dock-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    min-width: 0;
+    flex: 1;
+  }
+  .dock-tabs::-webkit-scrollbar { display: none; }
+  .dock-tabs button { flex: 0 0 auto; padding: 8px 12px; white-space: nowrap; }
+  .dock-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(39, 39, 42, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Split chats: sin sala activa → solo lista; con sala → tira de salas + chat */
+  .dock-body-split {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 38%) minmax(0, 1fr);
+  }
+  .dock-rooms-list {
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .dock-body-split:not(:has(.dock-chat-header-bar)) { grid-template-rows: minmax(0, 1fr); }
+  .dock-body-split:not(:has(.dock-chat-header-bar)) .dock-chat-area { display: none; }
+
+  .dock-body-split:has(.dock-chat-header-bar) { grid-template-rows: auto minmax(0, 1fr); }
+  .dock-body-split:has(.dock-chat-header-bar) .dock-rooms-list {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    padding: 8px 10px;
+    gap: 6px;
+  }
+  .dock-body-split:has(.dock-chat-header-bar) .dock-rooms-list::-webkit-scrollbar { display: none; }
+  .dock-body-split:has(.dock-chat-header-bar) .dock-inline-form,
+  .dock-body-split:has(.dock-chat-header-bar) .dock-chat-filter-pills,
+  .dock-body-split:has(.dock-chat-header-bar) .dock-empty-hint,
+  .dock-body-split:has(.dock-chat-header-bar) .dock-room-meta > span,
+  .dock-body-split:has(.dock-chat-header-bar) .chat-role-mini-badge { display: none; }
+  .dock-body-split:has(.dock-chat-header-bar) .dock-room-btn {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 150px;
+    padding: 5px 10px 5px 5px;
+    border-radius: 99px;
+    border-color: var(--border-subtle);
+    gap: 7px;
+  }
+  .dock-body-split:has(.dock-chat-header-bar) .dock-room-btn.active {
+    border-color: var(--accent-neon);
+    box-shadow: 0 0 12px rgba(250, 204, 21, 0.25);
+  }
+  .dock-body-split:has(.dock-chat-header-bar) .dock-room-avatar { width: 28px; height: 28px; }
+
+  .dock-chat-filter-pills {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .dock-chat-filter-pills::-webkit-scrollbar { display: none; }
+  .dock-chat-filter-pills button { flex: 0 0 auto; padding: 6px 10px; font-size: 11px; }
+
+  .dock-room-btn { padding: 10px; }
+  .dock-chat-area { padding: 10px 12px; }
+  .dock-bubble { max-width: 86%; font-size: 14px; }
+  .dock-chat-form input { padding: 11px 14px; border-radius: 14px; }
+  .dock-chat-form button { padding: 0 16px; border-radius: 14px; }
+
+  .dock-friend-card,
+  .friend-suggestion-row { flex-wrap: wrap; gap: 8px; }
+  .dock-list-view { padding: 12px; }
+   /* Gestionar miembros: el desplegable de búsqueda va dentro del panel (antes quedaba
+     recortado por el scroll del panel y no se veía ni una persona entera) */
+  .group-members-manager-panel { max-height: 62%; overflow-y: auto; }
+  .group-member-search-wrap .friend-autocomplete-dropdown {
+    position: static;
+    margin-top: 6px;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+  .group-member-search-wrap .friend-suggestion-row { flex-wrap: nowrap; }
+  .group-member-search-wrap .friend-suggestion-row .friend-user-cell { min-width: 0; flex: 1; }
+  .group-member-search-wrap .friend-suggestion-row .btn-send-req { flex-shrink: 0; min-height: 36px; }
+
+
+  /* ======================================================================
+     1.8 DRAWERS (Evento / DJ / Club / Promotor) → BOTTOM SHEET
+     Si hay varios abiertos se deslizan en horizontal con snap.
+     ====================================================================== */
+  .drawers-cascade-dock {
+    position: fixed;
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 86vh;
+    height: 86dvh;
+    max-width: 100vw;
+    z-index: 40;
+    gap: 0;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .drawers-cascade-dock::-webkit-scrollbar { display: none; }
+
+  .drawers-cascade-dock > .event-drawer-shell,
+  .drawers-cascade-dock > .artist-drawer-shell,
+  .drawers-cascade-dock > .club-drawer-shell,
+  .event-drawer-shell,
+  .artist-drawer-shell,
+  .club-drawer-shell {
+    flex: 0 0 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    border-radius: var(--m-sheet-radius) var(--m-sheet-radius) 0 0;
+    border-bottom: none;
+    padding-bottom: var(--m-safe-bottom);
+    transition: none;
+    box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.85);
+    animation: mSheetUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Asa visual */
+  .event-drawer-shell::before,
+  .artist-drawer-shell::before,
+  .club-drawer-shell::before {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    width: 38px;
+    height: 4px;
+    margin-left: -19px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.28);
+    z-index: 40;
+    pointer-events: none;
+  }
+
+  /* Columna principal a ancho completo */
+  .drawer-info-column,
+  .artist-info-column,
+  .club-main-column {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex: 1 1 auto;
+  }
+
+  /* Modo expandido (chat del evento / media del DJ / info del club):
+     se apila en vertical; info arriba, panel extra abajo */
+  .event-drawer-shell.is-expanded,
+  .artist-drawer-shell.is-expanded,
+  .club-drawer-shell.is-expanded { flex-direction: column; }
+
+  .event-drawer-shell.is-expanded .drawer-info-column,
+  .artist-drawer-shell.is-expanded .artist-info-column,
+  .club-drawer-shell.is-expanded .club-main-column {
+    order: 1;
+    flex: 0 1 44%;
+    min-height: 0;
+  }
+  .drawer-chat-column,
+  .artist-media-column,
+  .club-info-media-column {
+    order: 2;
+    width: 100%;
+    min-width: 0 !important;
+    min-height: 0;
+    flex: 1 1 56%;
+    border-right: none !important;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  /* Botón cerrar más grande */
+  .drawer-close {
+    top: 14px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    background: rgba(9, 9, 11, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .btn-collapse-chat { width: 34px; height: 34px; }
+
+  /* Hero de evento (más bajo si el chat está abierto) */
+  .drawer-hero { height: 190px; }
+  .event-drawer-shell.is-expanded .drawer-hero { height: 110px; }
+
+  /* Artista / club */
+  .artist-avatar-giant { width: 68px; height: 68px; }
+  .club-avatar-square { width: 64px; height: 64px; }
+  .artist-actions-bottom { grid-template-columns: 1fr 1fr; }
+  .dj-promoter-grid { grid-template-columns: 1fr 1fr; }
+  .club-photos-grid { grid-template-columns: 1fr 1fr; }
+  .club-photo-card img { height: 120px; }
+  .dj-session-video,
+  .club-promo-video { max-height: 210px; }
+
+  /* Botones de acción del drawer con buen tamaño táctil */
+  .btn-going,
+  .btn-squad,
+  .btn-toggle-expand-chat,
+  .btn-toggle-dj-media,
+  .btn-toggle-club-info,
+  .btn-toggle-dj-promoter { min-height: 44px; }
+  .squad-actions { flex-wrap: wrap; }
+
+  .attendees-scroll-items { max-height: 200px; }
+  .drawer-chat-input input { padding: 11px 14px; }
+  .cluster-nav-bar button { width: 32px; height: 32px; }
+
+
+  /* ======================================================================
+     1.9 MODALES → BOTTOM SHEETS
+     ====================================================================== */
+  .modal-overlay {
+    align-items: flex-end;
+    padding: calc(var(--m-safe-top) + 12px) 0 0;
+  }
+
+  .modal-card {
+    width: 100%;
+    max-width: 100% !important;
+    max-height: 92vh !important;
+    max-height: 92dvh !important;
+    overflow-y: auto;
+    border-radius: var(--m-sheet-radius) var(--m-sheet-radius) 0 0;
+    border-bottom: none;
+    padding: 26px 16px calc(20px + var(--m-safe-bottom));
+    animation: mSheetUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .modal-card::before {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 38px;
+    height: 4px;
+    margin-left: -19px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.18);
+    pointer-events: none;
+  }
+  /* Sheets que gestionan su propio scroll interno */
+  .collab-modal-card,
+  .manage-events-modal-card { overflow: hidden; }
+
+  .modal-close {
+    top: 14px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+  }
+  .modal-title { font-size: 19px; padding-right: 44px; }
+  .modal-subtitle { font-size: 12.5px; }
+
+  /* --- Auth --- */
+  .auth-pro-card { padding: 30px 18px calc(24px + var(--m-safe-bottom)); }
+  .google-official-btn { min-height: 50px; }
+
+  /* --- Añadir / editar evento --- */
+  .pro-form-grid-3 { grid-template-columns: 1fr 1fr; }
+  .pro-form-grid-3 > :first-child { grid-column: 1 / -1; }
+  .pro-media-uploads { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lineup-slot-inputs { grid-template-columns: 1fr 1fr; }
+  .lineup-slot-inputs > :last-child { grid-column: 1 / -1; min-height: 40px; }
+  .pro-coords-bar { flex-wrap: wrap; gap: 8px; }
+  .added-lineup-list { max-height: 200px; }
+  .venue-mode-pills { flex-wrap: wrap; }
+  .lineup-builder-header,
+  .venue-mode-header { flex-wrap: wrap; gap: 6px; }
+  .pro-input { padding: 11px 12px; }
+
+  /* --- Perfil (pasaporte holo + editor) --- */
+  .profile-modal-shell.is-wide-editor { overflow-y: auto; }
+  .profile-modal-layout { flex-direction: column; gap: 16px; }
+  .profile-left-column { width: 100%; }
+  .profile-right-editor { max-height: none; overflow: visible; }
+  .editor-tabs-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .editor-tabs-bar::-webkit-scrollbar { display: none; }
+  .editor-tabs-bar button { flex: 0 0 auto; white-space: nowrap; }
+  .editor-footer-btns {
+    position: sticky;
+    bottom: calc(-20px - var(--m-safe-bottom));
+    background: linear-gradient(180deg, transparent, #121216 30%);
+    padding: 14px 0 calc(6px + var(--m-safe-bottom));
+    z-index: 5;
+  }
+  .holo-passport-card { padding: 16px; }
+  .holo-user-titles h3 { font-size: 18px; }
+  .dj-calendar-grid { grid-template-columns: repeat(3, 1fr); }
+  .travel-selector-row { flex-wrap: wrap; gap: 8px; }
+  .edit-row { flex-wrap: wrap; }
+
+  /* --- Ranking --- */
+  .ranking-filters-bar { grid-template-columns: 1fr; }
+  .ranking-top-switch-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding-right: 0;
+  }
+
+  /* Pestañas DJs / Eventos / Promotores / Clubs: a todo el ancho, icono sobre texto */
+  .ranking-modal-card .ranking-mode-pills {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    width: 100%;
+    gap: 4px;
+  }
+  .ranking-modal-card .ranking-mode-pills button {
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    min-width: 0;
+    padding: 7px 2px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .ranking-modal-card .ranking-mode-pills button span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Fila: nº + foto + datos en una línea; los botones debajo, a todo el ancho */
+  .ranking-row {
+    flex-wrap: wrap;
+    column-gap: 10px;
+    row-gap: 10px;
+    padding: 10px 12px;
+  }
+  .rank-number { width: 26px; flex: 0 0 26px; font-size: 14px; }
+  .rank-avatar { width: 42px; height: 42px; flex: 0 0 42px; }
+  .rank-info { flex: 1 1 0; min-width: 0; }
+  .rank-info strong { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rank-meta-pills { gap: 4px 10px; }
+  .rank-actions { flex: 1 0 100%; margin-left: 0; gap: 8px; }
+  .rank-actions > * { flex: 1 1 0; justify-content: center; min-height: 38px; }
+  .ranking-row .btn-rank-listen span { display: inline; }
+
+  /* --- Colaboraciones --- */
+  .collab-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding-right: 0;
+  }
+  /* Cabeceras con icono en caja (Colaboraciones, Gestionar fiestas, Ranking,
+     Soporte): la base está en App.css (.modal-icon-header); en móvil dejamos
+     hueco para la X y la descripción vuelve a ocupar todo el ancho */
+  .modal-icon-header { flex: none; padding-right: 40px; }   /* en columna: sin flex-basis (sería alto) */
+  .modal-icon-header .modal-title { font-size: 16px; padding-right: 0; }
+  .modal-icon-header .modal-subtitle { margin-right: -40px; font-size: 12.5px; }
+  /* Pestañas a todo el ancho; los textos largos pasan a dos líneas */
+  .collab-modal-card .ranking-mode-pills {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    width: 100%;
+    gap: 4px;
+  }
+  .collab-modal-card .ranking-mode-pills button {
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    min-width: 0;
+    padding: 7px 4px;
+    font-size: 11px;
+    line-height: 1.25;
+    white-space: normal;
+    text-align: center;
+  }
+  .collab-offer-banner { height: 130px; }
+  .collab-targets-row,
+  .collab-checks-row,
+  .collab-link-row { flex-wrap: wrap; gap: 8px; }
+  .collab-submodal-backdrop { align-items: flex-end; padding: 0; }
+  .collab-submodal-card {
+    max-width: 100%;
+    border-radius: var(--m-sheet-radius) var(--m-sheet-radius) 0 0;
+    padding-bottom: calc(18px + var(--m-safe-bottom));
+    animation: mSheetUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* --- Gestionar eventos --- */
+  .manage-events-split { grid-template-columns: 1fr; min-height: 0; }
+  .manage-user-row { flex-wrap: wrap; gap: 8px; }
+
+  /* --- Inspeccionar usuario --- */
+  .inspect-actions { grid-template-columns: 1fr; }
+
+  /* --- Onboarding / Pro / Soporte --- */
+  .onboarding-role-option { padding: 14px 12px; }
+  .pro-benefits-list { padding: 12px; }
+
+  /* --- Calendario DJ 6 meses --- */
+  .dj-cal-cell { min-height: 36px; }
+
+  /* --- Lightbox de media (a pantalla completa) --- */
+  .lightbox-overlay { padding: 0; }
+  .lightbox-container { max-height: 100vh; max-height: 100dvh; }
+  .lightbox-media-element { max-height: 72vh; max-height: 72dvh; border-radius: 0; }
+  .lightbox-close-btn {
+    top: calc(var(--m-safe-top) + 12px);
+    right: 12px;
+    width: 40px;
+    height: 40px;
+  }
+  .lightbox-nav-btn { width: 42px; height: 42px; }
+  .lightbox-caption-bar {
+    padding: 12px 14px calc(12px + var(--m-safe-bottom));
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+
+  /* ======================================================================
+     1.10 PANEL ADMIN (/admin)
+     ====================================================================== */
+  .admin-page-shell {
+    padding: calc(var(--m-safe-top) + 14px) 12px calc(20px + var(--m-safe-bottom));
+  }
+  .admin-topbar { flex-direction: column; align-items: stretch; }
+  .admin-top-actions { width: 100%; }
+  .admin-top-actions > * { flex: 1; justify-content: center; }
+  .admin-filter-tabs { overflow-x: auto; scrollbar-width: none; }
+  .admin-filter-tabs button { flex: 0 0 auto; white-space: nowrap; }
+  .admin-ticket-card { padding: 14px; }
+  .ticket-reply-box { flex-direction: column; }
+  .ticket-reply-box button { min-height: 42px; }
+  .admin-kpi-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .admin-kpi-card strong { font-size: 22px; }
+  .admin-pro-users-grid { grid-template-columns: 1fr; }
+  .admin-pro-search-input { min-width: 0; width: 100%; }
+  .admin-pro-user-row { flex-wrap: wrap; gap: 8px; }
+  .admin-chart-header { flex-wrap: wrap; gap: 8px; }
+
+
+  /* ======================================================================
+     1.11 MAPA
+     ====================================================================== */
+  .dj-pin-label,
+  .club-pin-label,
+  .promoter-pin-label { font-size: 9.5px; }
+  .leaflet-control-attribution {
+    margin-bottom: calc(var(--m-tab-total) + 2px) !important;
+    font-size: 9px !important;
+    opacity: 0.6;
+  }
+
+  /* ======================================================================
+     1.12 GESTOS DE ARRASTRE (src/mobileSheetGestures.js)
+     ↑ desde el asa → pantalla completa · ↓ → tamaño normal / cerrar
+     ====================================================================== */
+  /* Asa un poco más grande y visible: invita a arrastrar */
+  .event-drawer-shell::before,
+  .artist-drawer-shell::before,
+  .club-drawer-shell::before,
+  .dock-header::before,
+  .modal-card::before {
+    width: 44px;
+    height: 5px;
+    margin-left: -22px;
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  }
+
+  .drawers-cascade-dock,
+  .social-dock-popup { transition: height 0.26s cubic-bezier(0.2, 0.9, 0.3, 1); }
+
+  /* Drawers a pantalla completa */
+  .drawers-cascade-dock[data-m-sheet="full"] {
+    height: 100vh;
+    height: 100dvh;
+    z-index: 50;                       /* por encima de la navbar */
+  }
+  .drawers-cascade-dock[data-m-sheet="full"] > * {
+    border-radius: 0 !important;
+    padding-top: var(--m-safe-top);
+  }
+  .drawers-cascade-dock[data-m-sheet="full"] .drawer-close { top: calc(var(--m-safe-top) + 14px); }
+  .drawers-cascade-dock[data-m-sheet="full"] > *::before { top: calc(var(--m-safe-top) + 7px); }
+
+  /* Chat social a pantalla completa */
+  .social-dock-popup[data-m-sheet="full"] {
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    padding-top: var(--m-safe-top);
+  }
+
+  /* Modales a pantalla completa */
+  .modal-overlay:has(.modal-card[data-m-sheet="full"]) { padding-top: 0; }
+  .modal-card[data-m-sheet="full"] {
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh !important;
+    max-height: 100dvh !important;
+    border-radius: 0;
+    padding-top: calc(26px + var(--m-safe-top));
+  }
+  .modal-card[data-m-sheet="full"]::before { top: calc(var(--m-safe-top) + 8px); }
+  .modal-card[data-m-sheet="full"] > .modal-close { top: calc(var(--m-safe-top) + 14px); }
+}
+
+
+/* ==========================================================================
+   2. MÓVILES PEQUEÑOS  (≤ 380px · iPhone SE, Android compactos)
+   ========================================================================== */
+@media (max-width: 380px) {
+  :root { --m-tab-h: 60px; --m-nav-h: 100px; }
+
+  .navbar-actions button { font-size: 9.5px; }
+  .navbar-actions button > svg { width: 40px; height: 28px; }
+  .navbar-filters .pro-select-trigger { height: 34px; }
+
+  .hud-layer-info strong { font-size: 11px; }
+
+  .pro-form-grid-2 { grid-template-columns: 1fr; }
+  .pro-media-uploads { grid-template-columns: 1fr 1fr; }
+  .holo-stats-grid { gap: 5px; }
+  .holo-stat-val { font-size: 12px; }
+  .admin-kpi-grid { grid-template-columns: 1fr; }
+}
+
+
+/* ==========================================================================
+   3. MÓVIL EN HORIZONTAL  (poco alto)
+   ========================================================================== */
+@media (max-width: 950px) and (max-height: 500px) and (orientation: landscape) {
+  .top-events-widget { display: none; }
+  .drawers-cascade-dock { height: 96vh; height: 96dvh; }
+  .event-drawer-shell.is-expanded,
+  .artist-drawer-shell.is-expanded,
+  .club-drawer-shell.is-expanded { flex-direction: row; }
+  .event-drawer-shell.is-expanded .drawer-info-column,
+  .artist-drawer-shell.is-expanded .artist-info-column,
+  .club-drawer-shell.is-expanded .club-main-column { flex: 1 1 50%; }
+  .drawer-chat-column,
+  .artist-media-column,
+  .club-info-media-column { flex: 1 1 50%; border-top: none; border-left: 1px solid var(--border-subtle); }
+  .drawer-hero { height: 140px; }
+  .social-dock-popup { height: 96vh; height: 96dvh; }
+}
+
+
+/* ==========================================================================
+   4. ANIMACIONES
+   ========================================================================== */
+@keyframes mSheetUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+@keyframes mFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes mPublishPulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(250, 204, 21, 0.35); }
+  50%      { box-shadow: 0 0 26px rgba(250, 204, 21, 0.65), 0 0 6px rgba(255, 85, 0, 0.5); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-actions .nav-btn-publish > svg,
+  .nav-more-sheet,
+  .nav-more-backdrop,
+  .modal-card,
+  .social-dock-popup,
+  .event-drawer-shell,
+  .artist-drawer-shell,
+  .club-drawer-shell,
+  .nav-notifications-dropdown { animation: none !important; }
+}
+
+/* ==========================================================================
+   AJUSTES MÓVIL (31 oct): paneles ampliados, club → evento y capas en columna
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* 1. Sesiones del DJ, chat del evento, info del club/promotor: el panel extra
+        ocupa todo desde la cabecera (imagen con "Audio ON", género…) hacia abajo */
+  .event-drawer-shell.is-expanded .drawer-info-column,
+  .artist-drawer-shell.is-expanded .artist-info-column,
+  .club-drawer-shell.is-expanded .club-main-column {
+    flex: 0 0 auto;
+  }
+  .event-drawer-shell.is-expanded .drawer-body,
+  .artist-drawer-shell.is-expanded .artist-drawer-body,
+  .club-drawer-shell.is-expanded .artist-drawer-body {
+    display: none;
+  }
+  .event-drawer-shell.is-expanded .drawer-chat-column,
+  .artist-drawer-shell.is-expanded .artist-media-column,
+  .club-drawer-shell.is-expanded .club-info-media-column {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  .event-drawer-shell.is-expanded .drawer-hero { height: 150px; }
+
+  /* 2. Al abrir una fiesta desde un club o promotor, su panel se cambia por el de
+        la fiesta. Al cerrar la fiesta vuelve a aparecer el del club. */
+  .drawers-cascade-dock:has(> .event-drawer-shell) > .club-drawer-shell {
+    display: none;
+  }
+
+  /* 3. Filtro de capas: columna compacta a la izquierda (icono + nombre corto),
+        sin scroll lateral y sin tapar el ancho del mapa */
+  .bottom-left-controls {
+    right: auto;
+    width: auto;
+  }
+  .radar-layers-hud {
+    width: auto;
+    flex-direction: column;
+    gap: 4px;
+    padding: 5px;
+    border-radius: 18px;
+    overflow: visible;
+  }
+  .hud-layer-card {
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    width: 60px;
+    min-height: 52px;
+    padding: 6px 2px 5px;
+    border-radius: 13px;
+  }
+  .hud-layer-icon-box {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+  }
+  .hud-layer-info {
+    width: 100%;
+    align-items: center;
+  }
+  .hud-layer-info strong { display: none; }
+  .hud-layer-short {
+    display: block;
+    max-width: 100%;
+    font-style: normal;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #a1a1aa;
+  }
+  .hud-layer-card[class*='active-'] .hud-layer-short { color: #fff; }
+}
+
+/* ==========================================================================
+   AJUSTES 1 nov: listas con scroll de los paneles, capas más pequeñas en
+   móvil y tarjeta de perfil sin el chip de BPM
+   ========================================================================== */
+/* Dentro de los paneles con scroll nada se encoge: así los vídeos y fotos no se
+   cortan y aparece el scroll (antes las tarjetas se aplastaban para caber) */
+.artist-media-feed > *,
+.artist-drawer-body > *,
+.club-media-scroll-body > *,
+.drawer-body > * {
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  /* 1. Filtro de capas (Fiestas / DJs / Promos / Clubs) más pequeño */
+  .radar-layers-hud {
+    gap: 3px;
+    padding: 4px;
+    border-radius: 15px;
+  }
+  .hud-layer-card {
+    width: 46px;
+    min-height: 40px;
+    gap: 2px;
+    padding: 4px 2px 3px;
+    border-radius: 11px;
+  }
+  .hud-layer-icon-box {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+  }
+  .hud-layer-icon-box svg { width: 13px; height: 13px; }
+  .hud-layer-short { font-size: 8.5px; letter-spacing: 0; }
+
+  /* 2. Tarjeta de perfil: fuera el chip de BPM (o "Sala oficial") junto a // ID PASS */
+  .holo-top-bar .holo-bpm-chip { display: none; }
+}
+
+/* ==========================================================================
+   AJUSTES 1 nov (2): top trending plegado, gestionar fiestas
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Top trending plegado: solo el fueguito y la flecha */
+  .top-events-widget.is-collapsed .top-widget-title > strong { display: none; }
+  .top-events-widget.is-collapsed .top-widget-header { padding: 8px 9px; gap: 4px; }
+  .top-events-widget.is-collapsed .top-widget-title { gap: 0; }
+
+  /* Gestionar fiestas y accesos: los filtros (Todos, Solicitudes…) en 2 columnas */
+  .manage-events-modal-card .ranking-mode-pills {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    width: 100%;
+  }
+  .manage-events-modal-card .ranking-mode-pills button {
+    min-width: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 8px 8px;
+    font-size: 11px;
+    line-height: 1.2;
+    text-align: left;
+  }
+  .manage-events-modal-card .ranking-mode-pills button svg { flex-shrink: 0; }
+  .manage-events-modal-card .ranking-mode-pills button span {
+    min-width: 0;
+    white-space: normal;
+  }
+  .manage-events-split > * { min-width: 0; }
+}
+
+/* ==========================================================================
+   AJUSTES 2 nov: cabecera de los paneles dentro del scroll, paneles ampliados
+   a pantalla completa del panel y pestañas de Editar perfil en rejilla
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* 1. Fiesta / DJ / Club / Promotor: todo el panel hace scroll (la cabecera
+        con la foto se va hacia arriba y deja sitio al contenido) */
+  .event-drawer-shell,
+  .artist-drawer-shell,
+  .club-drawer-shell { position: relative; }
+
+  .drawer-info-column,
+  .artist-info-column,
+  .club-main-column {
+    position: static;            /* la X y Compartir se quedan fijas arriba */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .drawer-info-column > *,
+  .artist-info-column > *,
+  .club-main-column > * { flex-shrink: 0; }
+  .drawer-info-column > .drawer-body,
+  .artist-info-column > .artist-drawer-body,
+  .club-main-column > .artist-drawer-body {
+    flex: 0 0 auto;
+    overflow: visible;
+    min-height: auto;
+  }
+  .drawer-close,
+  .drawer-share { z-index: 45; }
+
+  /* Paneles ampliados (chat de la fiesta, sesiones/info del DJ, info del club o
+     promotor): ocupan TODO el panel; se vuelve con su botón de cerrar */
+  .event-drawer-shell.is-expanded .drawer-info-column,
+  .artist-drawer-shell.is-expanded .artist-info-column,
+  .club-drawer-shell.is-expanded .club-main-column { display: none; }
+  .event-drawer-shell.is-expanded .drawer-chat-column,
+  .artist-drawer-shell.is-expanded .artist-media-column,
+  .club-drawer-shell.is-expanded .club-info-media-column {
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: 0;
+    border-top: none;
+    padding-top: 12px;          /* hueco para el asa de arrastre */
+  }
+
+  /* 3. Editar perfil: pestañas en rejilla (antes había que deslizar de lado) */
+  .editor-tabs-bar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    overflow: visible;
+    padding-right: 0;
+  }
+  .editor-tabs-bar button {
+    min-width: 0;
+    justify-content: center;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.2;
+    min-height: 40px;
+    padding: 8px 6px;
+  }
+}

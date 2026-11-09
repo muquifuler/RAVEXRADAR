@@ -1,0 +1,121 @@
+/* src/components/ui/AudioTrimmer.css */
+.audio-trimmer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.audio-trimmer-card {
+  --trim-accent: #ff5500;
+  width: min(620px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #0f0f13;
+  border: 1px solid color-mix(in srgb, var(--trim-accent) 55%, transparent);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 30px color-mix(in srgb, var(--trim-accent) 18%, transparent);
+  color: #fff;
+}
+.audio-trimmer-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.audio-trimmer-head strong { display: flex; align-items: center; gap: 8px; font-size: 16px; color: var(--trim-accent); }
+.audio-trimmer-x {
+  width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
+  background: #18181b; border: 1px solid var(--border-subtle, #27272a); color: #d4d4d8; cursor: pointer;
+}
+.audio-trimmer-sub { margin: 0; font-size: 12.5px; line-height: 1.45; color: #a1a1aa; word-break: break-word; }
+.audio-trimmer-sub b { color: #fff; }
+.audio-trimmer-error {
+  margin: 0; padding: 8px 10px; border-radius: 9px; font-size: 12px;
+  color: #fca5a5; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.4);
+}
+.audio-trimmer-loading { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #a1a1aa; padding: 26px 0; justify-content: center; }
+.audio-trimmer-spin { animation: atSpin 0.9s linear infinite; }
+@keyframes atSpin { to { transform: rotate(360deg); } }
+
+/* Onda + selección */
+.audio-trimmer-track {
+  position: relative;
+  height: 112px;
+  border-radius: 12px;
+  background: #16161b;
+  border: 1px solid var(--border-subtle, #27272a);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+  overflow: visible;
+}
+.audio-trimmer-wave { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: 12px; }
+.audio-trimmer-shade { position: absolute; top: 0; bottom: 0; background: rgba(0, 0, 0, 0.45); pointer-events: none; }
+.audio-trimmer-shade:first-of-type { border-radius: 12px 0 0 12px; }
+.audio-trimmer-sel {
+  position: absolute; top: 0; bottom: 0;
+  border-top: 2px solid var(--trim-accent);
+  border-bottom: 2px solid var(--trim-accent);
+  background: color-mix(in srgb, var(--trim-accent) 10%, transparent);
+  cursor: grab;
+}
+.audio-trimmer-sel:active { cursor: grabbing; }
+.audio-trimmer-handle {
+  position: absolute; top: -6px; bottom: -6px; width: 28px; margin-left: -14px;
+  background: transparent; border: none; padding: 0; cursor: ew-resize; z-index: 2;
+  display: flex; align-items: center; justify-content: center; touch-action: none;
+}
+.audio-trimmer-handle span {
+  width: 10px; height: 100%; border-radius: 5px; background: var(--trim-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--trim-accent) 70%, transparent);
+  position: relative;
+}
+.audio-trimmer-handle span::after {
+  content: ''; position: absolute; left: 3px; right: 3px; top: 50%; height: 18px; margin-top: -9px;
+  border-left: 1.5px solid rgba(0, 0, 0, 0.55); border-right: 1.5px solid rgba(0, 0, 0, 0.55);
+}
+.audio-trimmer-handle:focus-visible span { outline: 2px solid #fff; outline-offset: 2px; }
+.audio-trimmer-playhead { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #fff; pointer-events: none; box-shadow: 0 0 8px #fff; }
+
+.audio-trimmer-times { display: flex; justify-content: space-between; font-size: 10.5px; color: #71717a; font-family: monospace; margin-top: -6px; }
+
+.audio-trimmer-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.audio-trimmer-stats > div {
+  display: flex; flex-direction: column; gap: 2px; padding: 7px 9px; border-radius: 10px;
+  background: #18181b; border: 1px solid var(--border-subtle, #27272a); min-width: 0;
+}
+.audio-trimmer-stats small { font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: #71717a; }
+.audio-trimmer-stats strong { font-size: 13.5px; font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.audio-trimmer-stats .is-ok strong { color: #4ade80; }
+.audio-trimmer-stats .is-bad strong { color: #f87171; }
+
+.audio-trimmer-meter { height: 5px; border-radius: 99px; background: #1f1f25; overflow: hidden; }
+.audio-trimmer-meter i { display: block; height: 100%; background: linear-gradient(90deg, #22c55e, var(--trim-accent)); border-radius: 99px; }
+
+.audio-trimmer-hint { margin: 0; font-size: 11.5px; line-height: 1.45; color: #a1a1aa; }
+.audio-trimmer-hint b { color: #fff; }
+.audio-trimmer-pro { margin: 0; display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--accent-neon, #facc15); }
+
+.audio-trimmer-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.audio-trimmer-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 40px; padding: 0 15px; border-radius: 10px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.audio-trimmer-btn.is-ghost { background: #18181b; border: 1px solid var(--border-subtle, #27272a); color: #e4e4e7; }
+.audio-trimmer-btn.is-main { background: var(--trim-accent); border: 1px solid var(--trim-accent); color: #0a0a0a; }
+.audio-trimmer-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+@media (max-width: 560px) {
+  .audio-trimmer-overlay { align-items: flex-end; padding: 0; }
+  .audio-trimmer-card { border-radius: 18px 18px 0 0; max-height: 92dvh; padding: 14px 14px calc(14px + env(safe-area-inset-bottom)); }
+  .audio-trimmer-track { height: 96px; }
+  .audio-trimmer-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .audio-trimmer-actions .audio-trimmer-btn { flex: 1 1 auto; min-height: 46px; }
+  .audio-trimmer-actions .audio-trimmer-btn.is-main { flex-basis: 100%; order: -1; }
+}

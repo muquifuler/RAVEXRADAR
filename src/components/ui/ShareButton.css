@@ -1,0 +1,30 @@
+/* RUTA COMPLETA: houseoftechno/src/components/ui/ShareButton.css */
+/* Va a la izquierda de la X de cerrar (.drawer-close) de cada panel */
+.drawer-share {
+  position: absolute; top: 12px; right: 52px; z-index: 30;
+  width: 32px; height: 32px; border-radius: 50%; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0, 0, 0, 0.75); color: #fff;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+.drawer-share:hover { background: var(--accent-neon); color: #09090b; }
+.drawer-share:active { transform: scale(0.94); }
+.drawer-share.is-done { background: #22c55e; color: #fff; }
+.drawer-share-toast {
+  position: absolute; top: calc(100% + 8px); right: -6px;
+  background: #09090b; color: #fff; border: 1px solid #22c55e;
+  font-size: 11.5px; font-weight: 700; white-space: nowrap;
+  padding: 5px 9px; border-radius: 8px; pointer-events: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  animation: drawerShareIn 0.18s ease-out;
+}
+@keyframes drawerShareIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 768px) {
+  .drawer-share {
+    top: 14px; right: 58px; width: 38px; height: 38px;
+    background: rgba(9, 9, 11, 0.6);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  .drawers-cascade-dock[data-m-sheet="full"] .drawer-share { top: calc(var(--m-safe-top) + 14px); }
+}

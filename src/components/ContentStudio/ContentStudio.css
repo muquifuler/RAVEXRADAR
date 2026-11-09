@@ -1,0 +1,240 @@
+/* src/components/ContentStudio/ContentStudio.css */
+.cs-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.cs-shell {
+  width: min(1220px, 100%);
+  height: min(820px, calc(100dvh - 36px));
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #0b0b0f;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85);
+  color: #fff;
+}
+.cs-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: linear-gradient(90deg, rgba(250, 204, 21, 0.1), rgba(255, 85, 0, 0.06), transparent);
+  flex-shrink: 0;
+}
+.cs-head-title { display: flex; align-items: center; gap: 10px; min-width: 0; color: var(--accent-neon); }
+.cs-head-title strong { display: block; font-size: 17px; color: #fff; }
+.cs-head-title span { font-size: 12px; color: var(--text-muted); }
+.cs-x {
+  width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  background: #18181b; border: 1px solid var(--border-subtle); color: #d4d4d8; cursor: pointer; flex-shrink: 0;
+}
+
+.cs-body { flex: 1; min-height: 0; display: grid; grid-template-columns: 230px minmax(0, 1fr) 340px; }
+.cs-label {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted);
+}
+.cs-label-muted { margin-top: 14px; opacity: 0.7; }
+
+/* ---------- Plantillas ---------- */
+.cs-gallery { padding: 12px; border-right: 1px solid var(--border-subtle); overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.cs-tpl-list { display: flex; flex-direction: column; gap: 6px; }
+.cs-tpl-btn {
+  --cs-accent: #facc15;
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 50px; padding: 6px 11px;
+  border-radius: 12px; border: 1px solid var(--border-subtle); background: #131317; color: #e4e4e7;
+  font: inherit; cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s;
+}
+.cs-tpl-btn > svg { color: var(--cs-accent); flex-shrink: 0; }
+.cs-tpl-text { display: flex; flex-direction: column; min-width: 0; }
+.cs-tpl-text strong { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cs-tpl-text small { font-size: 10.5px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cs-tpl-btn:hover:not(:disabled) { border-color: var(--cs-accent); }
+.cs-tpl-btn.is-active { border-color: var(--cs-accent); background: color-mix(in srgb, var(--cs-accent) 14%, #131317); color: #fff; }
+.cs-tpl-btn.is-locked { opacity: 0.4; cursor: not-allowed; min-height: 42px; }
+.cs-tpl-btn.is-locked > svg { color: #71717a; }
+
+/* ---------- Vista previa ---------- */
+.cs-preview {
+  min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 12px;
+  background: radial-gradient(circle at 50% 40%, #16161c, #0b0b0f 70%);
+}
+.cs-format-toggle { display: flex; gap: 6px; justify-content: center; flex-shrink: 0; }
+.cs-format-toggle button {
+  display: inline-flex; align-items: center; gap: 5px; min-height: 32px; padding: 0 12px; border-radius: 99px;
+  border: 1px solid var(--border-subtle); background: #131317; color: #a1a1aa; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.cs-format-toggle button.is-active { color: #0a0a0a; background: var(--accent-neon); border-color: var(--accent-neon); }
+.cs-stage { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; container-type: size; }
+.cs-canvas-wrap {
+  position: relative; border-radius: 14px; overflow: hidden; background: #000;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  /* encaja 9:16 o 4:5 dentro del hueco disponible, sin deformarse */
+  height: auto;
+}
+.cs-canvas-wrap.cs-fmt-story { aspect-ratio: 9 / 16; width: min(100cqw, calc(100cqh * 0.5625)); }
+.cs-canvas-wrap.cs-fmt-post { aspect-ratio: 4 / 5; width: min(100cqw, calc(100cqh * 0.8)); }
+@supports not (width: 1cqw) {
+  .cs-canvas-wrap.cs-fmt-story { width: auto; height: 100%; }
+  .cs-canvas-wrap.cs-fmt-post { width: auto; height: 100%; }
+}
+.cs-canvas { display: block; width: 100%; height: 100%; cursor: pointer; }
+.cs-canvas-loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.45); color: var(--accent-neon); }
+.cs-rec-badge {
+  position: absolute; top: 10px; left: 10px; display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: 99px; background: rgba(0, 0, 0, 0.7); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: 0.5px;
+}
+.cs-rec-badge i { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; animation: csBlink 1s infinite; }
+@keyframes csBlink { 50% { opacity: 0.2; } }
+.cs-spin { animation: csSpin 0.9s linear infinite; }
+@keyframes csSpin { to { transform: rotate(360deg); } }
+
+.cs-transport { display: flex; align-items: center; gap: 10px; flex-shrink: 0; max-width: 520px; width: 100%; margin: 0 auto; }
+.cs-play {
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: none; background: var(--accent-neon); color: #0a0a0a; cursor: pointer;
+}
+.cs-play:disabled { opacity: 0.45; cursor: not-allowed; }
+/* aviso bajo el reproductor mientras la canción se analiza o se carga */
+.cs-wait { flex-shrink: 0; max-width: 520px; width: 100%; margin: 6px auto 0; justify-content: center; text-align: center; }
+.cs-seek {
+  flex: 1; height: 6px; appearance: none; -webkit-appearance: none; border-radius: 99px; cursor: pointer;
+  background: linear-gradient(90deg, var(--accent-neon) var(--p, 0%), #27272a var(--p, 0%));
+}
+.cs-seek::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: none; }
+.cs-seek::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; border: none; }
+.cs-time { font-family: monospace; font-size: 12px; color: #a1a1aa; flex-shrink: 0; }
+
+/* ---------- Ajustes ---------- */
+.cs-form { padding: 12px 14px; border-left: 1px solid var(--border-subtle); overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+.cs-section { display: flex; flex-direction: column; gap: 8px; }
+.cs-form-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.cs-reset {
+  display: inline-flex; align-items: center; gap: 4px; padding: 4px 9px; border-radius: 8px;
+  border: 1px solid var(--border-subtle); background: #131317; color: #d4d4d8; font: inherit; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+.cs-reset:hover { border-color: var(--accent-neon); color: #fff; }
+.cs-select,
+.cs-field input,
+.cs-field textarea {
+  width: 100%; box-sizing: border-box; padding: 9px 10px; border-radius: 9px; border: 1px solid var(--border-subtle);
+  background: #131317; color: #fff; font: inherit; font-size: 13px; resize: vertical; color-scheme: dark;
+}
+.cs-select { min-height: 40px; }
+.cs-select:focus,
+.cs-field input:focus,
+.cs-field textarea:focus { outline: none; border-color: var(--accent-neon); }
+.cs-field { display: flex; flex-direction: column; gap: 4px; }
+.cs-field > span { font-size: 11px; font-weight: 700; color: #a1a1aa; }
+.cs-hint { margin: 0; font-size: 11px; line-height: 1.45; color: #71717a; }
+.cs-hint-row { display: flex; align-items: center; gap: 6px; color: #a1a1aa; }
+.cs-hint b { color: #e4e4e7; font-weight: 700; }
+.cs-hint-warn { color: #fbbf24; }
+.cs-hint-detail { color: #71717a; word-break: break-word; }
+.cs-hint-inline { font-size: 11px; color: #71717a; }
+.cs-error {
+  margin: 0; padding: 8px 10px; border-radius: 9px; font-size: 12px; line-height: 1.4;
+  color: #fca5a5; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.cs-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.cs-chip {
+  position: relative; display: inline-flex; align-items: center; gap: 5px; max-width: 100%; min-height: 32px; padding: 0 11px;
+  border-radius: 99px; border: 1px solid var(--border-subtle); background: #131317; color: #d4d4d8;
+  font: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.cs-chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+.cs-chip.is-active { border-color: var(--accent-neon); background: rgba(250, 204, 21, 0.12); color: #fff; }
+.cs-chip-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.cs-chip-upload { border-style: dashed; }
+
+.cs-music-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.cs-bpm { font-family: monospace; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 7px; background: rgba(250, 204, 21, 0.14); color: var(--accent-neon); }
+.cs-drop {
+  font-family: monospace; font-size: 11.5px; padding: 3px 8px; border-radius: 7px; cursor: pointer;
+  border: 1px solid var(--border-subtle); background: #131317; color: #d4d4d8;
+}
+.cs-drop.is-active { border-color: #ff5500; background: rgba(255, 85, 0, 0.18); color: #fdba74; }
+.cs-curve { width: 100%; height: 54px; border-radius: 8px; background: #101014; cursor: crosshair; display: block; }
+.cs-curve-bar { fill: #3f3f46; }
+.cs-curve-window { fill: rgba(250, 204, 21, 0.14); }
+.cs-curve-drop { stroke: #a1a1aa; stroke-dasharray: 3 3; stroke-width: 1; }
+.cs-curve-pick { stroke: #ff5500; stroke-width: 3; }
+
+.cs-colors { display: flex; gap: 8px; flex-wrap: wrap; }
+.cs-color {
+  width: 32px; height: 32px; border-radius: 50%; border: 2px solid transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; color: #0a0a0a; box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.25);
+}
+.cs-color.is-active { border-color: #fff; }
+
+/* Resultado (encima de todo el Estudio) */
+.cs-shell { position: relative; }
+.cs-result-overlay {
+  position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: center;
+  padding: 16px; background: rgba(0, 0, 0, 0.78); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+.cs-result {
+  width: min(440px, 100%); max-height: 100%; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+  padding: 14px; border-radius: 16px; background: #131317; border: 1px solid var(--border-subtle);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
+.cs-result-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.cs-result-head strong { font-size: 15px; color: var(--accent-neon); }
+.cs-result-media { width: 100%; max-height: min(62dvh, 640px); object-fit: contain; border-radius: 10px; background: #000; }
+.cs-result-actions { display: flex; gap: 8px; }
+
+/* ---------- Barra de acciones ---------- */
+.cs-actions {
+  display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap;
+  padding: 10px 14px; border-top: 1px solid var(--border-subtle); background: #0d0d11; flex-shrink: 0;
+}
+.cs-actions-note { flex-basis: 100%; text-align: right; font-size: 11px; color: #a1a1aa; order: 3; }
+.cs-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 42px; padding: 0 16px;
+  border-radius: 11px; border: 1px solid var(--border-subtle); background: #131317; color: #e4e4e7;
+  font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; flex: 0 0 auto;
+}
+.cs-result-actions .cs-btn { flex: 1 1 0; }
+.cs-btn.is-main { background: var(--accent-neon); border-color: var(--accent-neon); color: #0a0a0a; }
+.cs-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ==========================================================================
+   Móvil: plantillas en fila, vista previa, ajustes debajo y botones fijos
+   ========================================================================== */
+@media (max-width: 860px) {
+  .cs-overlay { padding: 0; align-items: stretch; }
+  .cs-shell { height: 100dvh; width: 100%; border-radius: 0; border: none; }
+  .cs-head { padding: 10px 12px; padding-top: calc(10px + env(safe-area-inset-top)); }
+  .cs-head-title span { display: none; }
+  .cs-body { display: flex; flex-direction: column; overflow-y: auto; overscroll-behavior: contain; }
+  .cs-gallery { border-right: none; border-bottom: 1px solid var(--border-subtle); overflow: visible; padding: 8px 10px; }
+  .cs-gallery .cs-label,
+  .cs-gallery .cs-label-muted,
+  .cs-tpl-locked { display: none; }
+  .cs-tpl-list { flex-direction: row; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; scroll-snap-type: x proximity; }
+  .cs-tpl-list::-webkit-scrollbar { display: none; }
+  .cs-tpl-btn { width: auto; flex-shrink: 0; min-height: 44px; scroll-snap-align: start; }
+  .cs-tpl-text small { display: none; }
+  .cs-preview { flex: 0 0 auto; height: min(68dvh, 640px); padding: 8px 10px; }
+  .cs-form { border-left: none; overflow: visible; padding: 12px; }
+  .cs-select,
+  .cs-field input,
+  .cs-field textarea { font-size: 16px; }
+  .cs-chip { min-height: 36px; }
+  .cs-actions { padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); justify-content: stretch; }
+  .cs-actions > .cs-btn { flex: 1 1 0; min-height: 46px; }
+  .cs-actions-note { text-align: center; }
+}

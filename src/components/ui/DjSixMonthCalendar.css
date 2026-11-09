@@ -1,0 +1,220 @@
+/* src/components/ui/DjSixMonthCalendar.css */
+.dj-six-month-calendar {
+  background: #121216;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  /* Nunca más ancho que su contenedor (panel, perfil, móvil…) */
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.dj-cal-top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.dj-cal-title {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #fff;
+}
+.dj-cal-arrows {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.dj-cal-step-indicator {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+.dj-cal-arrows button {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: #18181b;
+  border: 1px solid var(--border-subtle);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.dj-cal-arrows button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.dj-cal-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.legend-item.free { color: #4ade80; }
+.legend-item.busy { color: #f87171; }
+.legend-item.event { color: #fb923c; }
+
+.dj-cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr)); /* minmax(0,…): las celdas no empujan el ancho */
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 2px 0;
+}
+
+.dj-cal-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr)); /* minmax(0,…): las celdas no empujan el ancho */
+  gap: 4px;
+}
+
+.dj-cal-cell {
+  min-width: 0;
+  overflow: hidden;
+  font: inherit;
+  min-height: 38px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 1px;
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.12s;
+}
+.dj-cal-cell.empty {
+  background: transparent;
+  pointer-events: none;
+}
+.dj-cal-cell.read-only {
+  cursor: default;
+}
+
+.dj-cal-day-num {
+  font-size: 11px;
+  font-weight: 700;
+}
+.dj-cal-day-tag {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  margin-top: 1px;
+}
+
+/* Por defecto TODAS las fechas futuras son LIBRES (Verde) */
+.dj-cal-cell.is-free {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.45);
+  color: #fff;
+}
+.dj-cal-cell.is-free .dj-cal-day-tag {
+  color: #4ade80;
+}
+.dj-cal-cell.is-free:not(.read-only):hover {
+  border-color: #ef4444;
+  transform: scale(1.04);
+}
+
+/* Fechas marcadas manualmente como OCUPADAS (Rojo) */
+.dj-cal-cell.is-manual-busy {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: #ef4444;
+  color: #fff;
+}
+.dj-cal-cell.is-manual-busy .dj-cal-day-tag {
+  color: #fca5a5;
+}
+
+/* Fechas ocupadas automáticamente por Lineup o Asistencia a Evento (Naranja) */
+.dj-cal-cell.is-auto-booked {
+  background: rgba(255, 85, 0, 0.2);
+  border-color: #ff5500;
+  color: #fff;
+  cursor: not-allowed;
+}
+.dj-cal-cell.is-auto-booked .dj-cal-day-tag {
+  color: #fdba74;
+}
+
+/* Días ya pasados del mes actual */
+.dj-cal-cell.is-past {
+  background: #16161a;
+  color: #52525b;
+  cursor: not-allowed;
+}
+
+/* --- Calendario estrecho (móvil, panel "Info Promotores & Clubs", editar perfil) ---
+   Se adapta al ancho real del calendario, no al de la pantalla */
+@container (max-width: 380px) {
+  .dj-cal-month-grid { gap: 3px; }
+  .dj-cal-cell { min-height: 34px; border-radius: 6px; }
+  .dj-cal-day-tag { font-size: 6.5px; letter-spacing: 0; }
+  .dj-cal-legend { gap: 4px 10px; }
+}
+/* Muy estrecho: la etiqueta pasa a ser un punto del color del estado
+   (la leyenda de arriba explica cada color) */
+@container (max-width: 320px) {
+  .dj-cal-day-tag {
+    font-size: 0;
+    width: 5px;
+    height: 5px;
+    margin-top: 3px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+  .dj-cal-cell.is-past .dj-cal-day-tag { background: transparent; }
+}
+
+/* ---- Eventos propios del DJ (fuera del mapa) · cian ---- */
+.legend-item.own { color: #22d3ee; }
+.dj-cal-cell.is-own-event {
+  background: rgba(34, 211, 238, 0.16);
+  border-color: #22d3ee;
+  color: #fff;
+}
+.dj-cal-cell.is-own-event .dj-cal-day-tag { color: #67e8f9; }
+.dj-cal-cell.is-own-event:not(.read-only):hover { transform: scale(1.04); }
+
+/* Modo "elegir fecha" para un evento propio */
+.dj-cal-cell.is-pick-mode:not(:disabled):hover {
+  border-color: #22d3ee;
+  transform: scale(1.04);
+}
+.dj-cal-cell.is-picked {
+  outline: 2px solid #22d3ee;
+  outline-offset: 1px;
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.55);
+}
+
+/* Días de Lineup clicables (para ver la info del evento) */
+.dj-cal-cell.is-auto-booked:not(:disabled):not(.read-only) { cursor: pointer; }
+.dj-cal-cell.is-auto-booked:not(:disabled):not(.read-only):hover { transform: scale(1.04); }
+.dj-cal-cell.is-auto-booked.is-picked {
+  outline-color: #ff5500;
+  box-shadow: 0 0 12px rgba(255, 85, 0, 0.6);
+}

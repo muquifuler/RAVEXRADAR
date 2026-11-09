@@ -1,0 +1,57 @@
+/* src/components/ui/OwnerDeleteButton.css */
+.owner-delete-btn,
+.owner-delete-confirm {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 4;
+}
+.owner-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 9px;
+  background: rgba(9, 9, 11, 0.82);
+  border: 1px solid rgba(239, 68, 68, 0.55);
+  color: #f87171;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.owner-delete-btn:hover { background: #ef4444; border-color: #ef4444; color: #fff; }
+.owner-delete-btn.is-busy { cursor: progress; color: #fca5a5; }
+.owner-delete-confirm { display: inline-flex; gap: 4px; }
+.owner-delete-confirm button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 9px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.owner-delete-yes { background: #ef4444; border: 1px solid #ef4444; color: #fff; }
+.owner-delete-no { background: rgba(9, 9, 11, 0.85); border: 1px solid var(--border-subtle); color: #fff; padding: 0 8px !important; }
+.owner-delete-spinner {
+  width: 12px; height: 12px; border-radius: 50%;
+  border: 2px solid rgba(248, 113, 113, 0.3); border-top-color: #f87171;
+  animation: ownerDeleteSpin 0.7s linear infinite;
+}
+@keyframes ownerDeleteSpin { to { transform: rotate(360deg); } }
+
+/* Contenedores donde se coloca la papelera */
+.owner-media-wrap { position: relative; }
+/* En móvil, dedo: algo más grande */
+@media (max-width: 768px) {
+  .owner-delete-btn, .owner-delete-confirm button { height: 36px; min-width: 36px; }
+}
+/* Variante en línea (p. ej. dentro de la fila de una canción) */
+.owner-delete-btn.is-inline,
+.owner-delete-confirm.is-inline { position: static; flex-shrink: 0; margin-left: 6px; }

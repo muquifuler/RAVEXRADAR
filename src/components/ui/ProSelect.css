@@ -1,0 +1,30 @@
+/* src/components/ui/ProSelect.css */
+.pro-select { position: relative; min-width: 155px; user-select: none; }
+.pro-select-trigger {
+  width: 100%; display: flex; align-items: center; gap: 8px;
+  background: rgba(24, 24, 27, 0.9); border: 1px solid var(--border-subtle);
+  color: var(--text-primary); padding: 9px 12px; border-radius: 11px;
+  font-size: 12.5px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.pro-select-trigger:hover, .pro-select-trigger.is-open {
+  border-color: var(--accent-neon); box-shadow: 0 0 12px rgba(250, 204, 21, 0.15);
+}
+.pro-select-icon { color: var(--accent-neon); flex-shrink: 0; }
+.pro-select-label { flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pro-select-arrow { color: var(--text-muted); transition: transform 0.2s; }
+.pro-select-arrow.rotated { transform: rotate(180deg); color: var(--accent-neon); }
+
+.pro-select-menu {
+  position: absolute; top: calc(100% + 6px); left: 0; min-width: 100%; width: max-content;
+  max-height: 260px; overflow-y: auto; z-index: 100;
+  background: rgba(15, 15, 18, 0.96); backdrop-filter: blur(18px);
+  border: 1px solid var(--border-subtle); border-radius: 12px; padding: 5px;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.85); animation: popIn 0.15s ease-out;
+}
+.pro-select-item {
+  width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: transparent; border: none; color: var(--text-secondary);
+  padding: 8px 10px; border-radius: 8px; font-size: 12.5px; cursor: pointer; text-align: left;
+}
+.pro-select-item:hover { background: rgba(255, 255, 255, 0.06); color: #fff; }
+.pro-select-item.selected { background: rgba(250, 204, 21, 0.12); color: var(--accent-neon); font-weight: 700; }
