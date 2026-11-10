@@ -1,0 +1,216 @@
+/* src/components/TopEventsWidget/FriendsGoingWidget.css */
+
+/* ---- Contenedor de los widgets flotantes (Top Trending + Van tus amigos) ---- */
+.map-top-widgets {
+  position: absolute;
+  top: 82px;
+  left: 14px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  pointer-events: none;
+  max-height: calc(100vh - 110px);
+}
+.map-top-widgets > * { pointer-events: auto; }
+.map-top-widgets > .top-events-widget {
+  position: relative;
+  top: auto;
+  left: auto;
+}
+
+/* ---- Widget ---- */
+.friends-going-widget {
+  width: 265px;
+  background: rgba(12, 12, 16, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+}
+
+.fg-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 13px;
+  cursor: pointer;
+  background: linear-gradient(90deg, rgba(34, 197, 94, 0.16), rgba(34, 197, 94, 0.03));
+  border-bottom: 1px solid var(--border-subtle);
+  user-select: none;
+}
+.friends-going-widget.is-collapsed .fg-header { border-bottom: none; }
+
+.fg-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #4ade80;
+}
+.fg-title > strong { font-size: 14px; font-weight: 700; }
+.fg-icon { color: #22c55e; flex-shrink: 0; }
+.fg-count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 99px;
+  background: #22c55e;
+  color: #04120a;
+  font-size: 10.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.fg-toggle { color: var(--text-muted); display: flex; }
+
+.fg-list {
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  gap: 5px;
+  max-height: 40vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.fg-list::-webkit-scrollbar { display: none; }
+
+.fg-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: rgba(24, 24, 29, 0.85);
+  border: 1px solid var(--border-subtle);
+  padding: 6px 8px;
+  border-radius: 11px;
+  cursor: pointer;
+  text-align: left;
+  color: #fff;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.fg-item:hover { border-color: rgba(34, 197, 94, 0.7); transform: translateX(2px); }
+.fg-item.is-live { border-color: rgba(239, 68, 68, 0.55); }
+
+.fg-thumb {
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #1c1c22;
+}
+
+.fg-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.fg-info strong {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fg-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.fg-day {
+  flex-shrink: 0;
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.13);
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+.fg-day.is-live { color: #f87171; background: rgba(239, 68, 68, 0.2); }
+.fg-who {
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Pila de caras */
+.fg-faces { display: flex; flex-shrink: 0; padding-left: 6px; }
+.fg-face {
+  width: 22px;
+  height: 22px;
+  margin-left: -7px;
+  border-radius: 50%;
+  border: 2px solid #22c55e;
+  background: #1c1c22;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 1.5px #0c0c10;
+}
+.fg-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fg-face i { font-style: normal; font-size: 10px; font-weight: 800; color: #fff; }
+.fg-face.is-squad { border-color: var(--accent-neon, #facc15); }
+.fg-face.fg-more {
+  border-color: rgba(255, 255, 255, 0.25);
+  font-size: 9px;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* ---- Móvil: el de amigos va a la DERECHA del Top Trending ---- */
+@media (max-width: 768px) {
+  .map-top-widgets {
+    top: calc(var(--m-nav-bottom) + var(--m-gap));
+    left: var(--m-gap);
+    right: var(--m-gap);
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .map-top-widgets > .top-events-widget { top: auto; left: auto; }
+
+  .friends-going-widget {
+    width: min(300px, calc(100vw - 2 * var(--m-gap)));
+    border-radius: 16px;
+  }
+  .friends-going-widget.is-collapsed { width: auto; }
+  .fg-header { padding: 9px 12px; }
+  .friends-going-widget.is-collapsed .fg-header { padding: 8px 9px; gap: 5px; }
+  .friends-going-widget.is-collapsed .fg-title > strong { display: none; }
+  .friends-going-widget.is-collapsed .fg-title { gap: 5px; }
+  .fg-title > strong { font-size: 13px; }
+
+  .fg-list { max-height: 42vh; max-height: 42dvh; }
+  .fg-item { min-height: 50px; }
+  .fg-thumb { width: 38px; height: 38px; border-radius: 9px; }
+  .fg-item:hover { transform: none; }
+}
+
+/* Modo "elegir ubicación": fuera del medio */
+.app-shell.picking-mode-active .map-top-widgets { opacity: 0; pointer-events: none; }
+.app-shell.picking-mode-active .map-top-widgets > * { pointer-events: none; }
+
+/* Móvil en horizontal: poco alto, se ocultan */
+@media (max-width: 950px) and (max-height: 500px) and (orientation: landscape) {
+  .map-top-widgets { display: none; }
+}
+
+/* Mientras el mapa se mueve: sin blur */
+html.map-is-moving .friends-going-widget {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background: rgba(12, 12, 16, 0.97);
+}

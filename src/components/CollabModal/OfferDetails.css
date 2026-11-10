@@ -1,0 +1,86 @@
+/* src/components/CollabModal/OfferDetails.css */
+.offer-details-fields { display: flex; flex-direction: column; gap: 10px; }
+.offer-details-block {
+  --od-accent: var(--accent-neon);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #141418;
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--od-accent);
+}
+.offer-details-block.is-dj { --od-accent: #ff5500; }
+.offer-details-block.is-club { --od-accent: #06b6d4; }
+.offer-details-block.is-promoter { --od-accent: #f43f5e; }
+.offer-details-block-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--od-accent);
+}
+.offer-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-items: end;
+}
+.offer-details-input { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.offer-details-input > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.offer-details-input input { width: 100%; box-sizing: border-box; }
+.offer-details-input input[type='date'] { color-scheme: dark; }
+.offer-details-range { display: flex; align-items: center; gap: 6px; }
+.offer-details-range > span { color: #71717a; }
+.offer-details-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #18181b;
+  border: 1px solid var(--border-subtle);
+  color: #d4d4d8;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.offer-details-toggle.on { border-color: var(--od-accent); color: #fff; background: color-mix(in srgb, var(--od-accent) 12%, #18181b); }
+.offer-details-toggle input { accent-color: var(--od-accent); }
+
+/* Etiquetas en la tarjeta */
+.offer-details-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 2px 0 6px; }
+.offer-chip {
+  --oc: #a1a1aa;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #e4e4e7;
+  background: #18181b;
+  border: 1px solid var(--border-subtle);
+}
+.offer-chip svg { color: var(--oc); }
+.offer-chip.is-dj { --oc: #ff5500; border-color: rgba(255, 85, 0, 0.35); }
+.offer-chip.is-club { --oc: #06b6d4; border-color: rgba(6, 182, 212, 0.35); }
+.offer-chip.is-promoter { --oc: #f43f5e; border-color: rgba(244, 63, 94, 0.35); }
+.offer-chip.is-deadline { --oc: var(--accent-neon); color: var(--accent-neon); border-color: rgba(250, 204, 21, 0.4); }
+
+@media (max-width: 520px) {
+  .offer-details-grid { grid-template-columns: 1fr; }
+}

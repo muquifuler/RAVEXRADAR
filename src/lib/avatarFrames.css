@@ -1,0 +1,239 @@
+/* RUTA COMPLETA: houseoftechno/src/lib/avatarFrames.css
+   ==========================================================================
+   Marcos animados de avatar (PRO · DJs). Lo importa src/lib/avatarFrames.js.
+   El marco ocupa 1/0.6 del avatar: el avatar es el círculo central del lienzo.
+   ========================================================================== */
+.rr-frame { position: relative; display: inline-flex; flex-shrink: 0; vertical-align: middle; }
+.rr-frame > .rr-frame-slot { position: relative; z-index: 2; display: flex; }
+.rr-frame > .rrf-layer {
+  position: absolute; left: -33.333%; top: -33.333%; width: 166.666%; height: 166.666%;
+  pointer-events: none;
+}
+.rr-frame > .rrf-under { z-index: 1; }
+.rr-frame > .rrf-over { z-index: 3; }
+.rrf-layer > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rrf-layer svg { overflow: visible; display: block; }
+.rrf-layer > div > svg { width: 100%; height: 100%; }
+
+/* El avatar enmarcado pierde su borde y su brillo propios: el marco hace de borde */
+.rr-frame.is-on.is-on > .rr-frame-slot > * {
+  border-color: #0b0b10 !important;
+  box-shadow: none !important;
+}
+
+/* ---------- Pausas ---------- */
+/* Mapa moviéndose: los pins quietos (rendimiento) */
+html.map-is-moving .leaflet-marker-pane .rr-frame,
+html.map-is-moving .leaflet-marker-pane .rr-frame * { animation-play-state: paused !important; }
+/* Miniaturas del selector: quietas salvo la elegida o al pasar el ratón */
+.rrf-paused .rr-frame,
+.rrf-paused .rr-frame * { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  .rr-frame, .rr-frame * { animation-play-state: paused !important; }
+}
+
+/* ---------- Comunes ---------- */
+.rrf-vb { transform-box: view-box; transform-origin: 50% 50%; }
+@keyframes rrf-spin { to { transform: rotate(360deg); } }
+/* Capas que giran enteras (las mueve la tarjeta gráfica, sin redibujar) */
+.rrf-rot { animation: rrf-spin var(--d, 3s) linear infinite; }
+.rrf-rot.rev { animation-direction: reverse; }
+.rrf-beat-ring { animation: rrf-beatring .469s ease-out infinite; }
+@keyframes rrf-beatring { 0% { stroke-width: 5; opacity: 1; } 100% { stroke-width: 2.5; opacity: .75; } }
+
+/* ---------- Radar ---------- */
+.rrf-sweep {
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 70%,
+    color-mix(in srgb, var(--fc) 5%, transparent) 80%,
+    color-mix(in srgb, var(--fc) 90%, transparent) 99.5%, transparent 100%);
+  -webkit-mask: radial-gradient(circle closest-side, transparent 58%, #000 60%, #000 96%, transparent 98%);
+  mask: radial-gradient(circle closest-side, transparent 58%, #000 60%, #000 96%, transparent 98%);
+  animation: rrf-spin 2.6s linear infinite;
+}
+.rrf-blip { animation: rrf-blip 2.6s ease-out infinite; animation-delay: var(--dl); }
+@keyframes rrf-blip { 0%, 100% { opacity: 0; } 4% { opacity: 1; } 40% { opacity: .15; } }
+
+/* ---------- Rayos ---------- */
+.rrf-zap { opacity: 0; animation: rrf-zap var(--d) steps(1, end) infinite; animation-delay: var(--dl); }
+@keyframes rrf-zap {
+  0% { opacity: 1; } 3% { opacity: .2; } 5% { opacity: 1; } 12% { opacity: 0; }
+  30% { opacity: 1; } 35% { opacity: 0; }
+  52% { opacity: 1; } 55% { opacity: .3; } 57% { opacity: 1; } 62% { opacity: 0; }
+  78% { opacity: 1; } 83% { opacity: 0; } 100% { opacity: 0; }
+}
+.rrf-zring { animation: rrf-zring 1.3s steps(1, end) infinite; }
+@keyframes rrf-zring { 0% { opacity: 1; } 20% { opacity: .55; } 24% { opacity: 1; } 61% { opacity: .7; } 64% { opacity: 1; } }
+
+/* ---------- Glitch ---------- */
+.rrf-gx-r, .rrf-gx-c, .rrf-gx-w { transform-box: view-box; transform-origin: 50% 50%; }
+.rrf-gx-r { animation: rrf-gxr 1.8s steps(1, end) infinite; }
+.rrf-gx-c { animation: rrf-gxc 1.8s steps(1, end) infinite; }
+.rrf-gx-w { animation: rrf-gxw 1.8s steps(1, end) infinite; }
+@keyframes rrf-gxr {
+  0% { transform: none; } 10% { transform: translate(-10px, 2px); } 12% { transform: translate(7px, -3px); }
+  14% { transform: translate(-5px, 0); } 16% { transform: translate(11px, 1px); } 18% { transform: none; }
+  55% { transform: translate(8px, -2px); } 57% { transform: translate(-9px, 3px); } 60% { transform: none; }
+  80% { transform: translate(-7px, 0) skewX(8deg); } 83% { transform: none; }
+}
+@keyframes rrf-gxc {
+  0% { transform: none; } 10% { transform: translate(10px, -2px); } 12% { transform: translate(-7px, 3px); }
+  14% { transform: translate(5px, 0); } 16% { transform: translate(-11px, -1px); } 18% { transform: none; }
+  55% { transform: translate(-8px, 2px); } 57% { transform: translate(9px, -3px); } 60% { transform: none; }
+  80% { transform: translate(7px, 0) skewX(-8deg); } 83% { transform: none; }
+}
+@keyframes rrf-gxw {
+  0% { stroke-dasharray: none; } 10% { stroke-dasharray: 40 8 12 14; } 14% { stroke-dasharray: 6 10 60 6; }
+  18% { stroke-dasharray: none; } 55% { stroke-dasharray: 22 18; } 60% { stroke-dasharray: none; }
+  80% { stroke-dasharray: 70 10 4 10; } 83% { stroke-dasharray: none; }
+}
+.rrf-layer > .rrf-gh, .rrf-layer > .rrf-gs { inset: 20%; width: 60%; height: 60%; border-radius: 50%; }
+.rrf-gh-r { animation: rrf-ghr 1.8s steps(1, end) infinite; }
+.rrf-gh-c { animation: rrf-ghc 1.8s steps(1, end) infinite; }
+@keyframes rrf-ghr { 0% { transform: none; } 10% { transform: translate(-7%, 1%); } 14% { transform: translate(5%, -2%); } 18% { transform: none; } 55% { transform: translate(6%, 0); } 60% { transform: none; } 80% { transform: translate(-8%, 1%); } 83% { transform: none; } }
+@keyframes rrf-ghc { 0% { transform: none; } 10% { transform: translate(7%, -1%); } 14% { transform: translate(-5%, 2%); } 18% { transform: none; } 55% { transform: translate(-6%, 0); } 60% { transform: none; } 80% { transform: translate(8%, -1%); } 83% { transform: none; } }
+.rrf-gs {
+  overflow: hidden; background: #18181b;
+  clip-path: inset(100% 0 0 0);
+  animation: rrf-gsl 1.8s steps(1, end) infinite;
+}
+.rrf-gs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@keyframes rrf-gsl {
+  0% { clip-path: inset(100% 0 0 0); transform: none; }
+  10% { clip-path: inset(20% 0 62% 0); transform: translateX(10%); }
+  12% { clip-path: inset(55% 0 30% 0); transform: translateX(-12%); }
+  14% { clip-path: inset(70% 0 18% 0); transform: translateX(7%); }
+  16% { clip-path: inset(35% 0 50% 0); transform: translateX(-8%); }
+  18% { clip-path: inset(100% 0 0 0); transform: none; }
+  55% { clip-path: inset(42% 0 44% 0); transform: translateX(13%); }
+  57% { clip-path: inset(10% 0 78% 0); transform: translateX(-10%); }
+  60% { clip-path: inset(100% 0 0 0); transform: none; }
+  80% { clip-path: inset(60% 0 25% 0); transform: translateX(-11%); }
+  83% { clip-path: inset(100% 0 0 0); transform: none; }
+}
+.rr-frame.fx-glitch > .rr-frame-slot { animation: rrf-gav 1.8s steps(1, end) infinite; }
+@keyframes rrf-gav {
+  0% { filter: none; } 10% { filter: contrast(1.5) saturate(1.8) hue-rotate(-20deg); } 18% { filter: none; }
+  55% { filter: contrast(1.4) hue-rotate(25deg); } 60% { filter: none; }
+  80% { filter: invert(.15) contrast(1.4); } 83% { filter: none; }
+}
+.rrf-gbar { opacity: 0; animation: rrf-gbar 1.8s steps(1, end) infinite; animation-delay: var(--dl); }
+@keyframes rrf-gbar { 0% { opacity: 0; } 10% { opacity: 1; } 13% { opacity: 0; } 15% { opacity: 1; } 18% { opacity: 0; } 56% { opacity: 1; } 60% { opacity: 0; } 80% { opacity: 1; } 83% { opacity: 0; } }
+
+/* ---------- Neón ---------- */
+.rrf-neon-a { filter: drop-shadow(0 0 3px var(--na)) drop-shadow(0 0 10px var(--na)); animation: rrf-neon 5s linear infinite; }
+.rrf-neon-b { filter: drop-shadow(0 0 3px var(--nb)) drop-shadow(0 0 8px var(--nb)); animation: rrf-neonb 3.2s ease-in-out infinite alternate; }
+@keyframes rrf-neon { 0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; } 20%, 24%, 55% { opacity: .2; } }
+@keyframes rrf-neonb { from { opacity: .5; } to { opacity: 1; } }
+
+/* ---------- Ecualizador (128 BPM) ---------- */
+.rrf-bar { transform-box: fill-box; transform-origin: 50% 100%; animation: rrf-eq var(--d) ease-in-out infinite alternate; animation-delay: var(--dl); }
+@keyframes rrf-eq { from { transform: scaleY(.15); } to { transform: scaleY(1); } }
+
+/* ---------- Latido 128 ---------- */
+.rrf-ecg { animation: rrf-ecg 1.876s linear infinite; }
+@keyframes rrf-ecg { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }
+
+/* ---------- Industrial ---------- */
+.rrf-hz {
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, var(--hc) 0 7.5deg, #0b0b10 7.5deg 15deg);
+  -webkit-mask: radial-gradient(circle closest-side, transparent 62%, #000 63%, #000 77%, transparent 78%);
+  mask: radial-gradient(circle closest-side, transparent 62%, #000 63%, #000 77%, transparent 78%);
+  animation: rrf-spin 7s linear infinite;
+}
+.rrf-layer > .rrf-beacon {
+  inset: auto; width: 7%; height: 7%; border-radius: 50%;
+  background: var(--bc); box-shadow: 0 0 6px 2px var(--bc);
+  animation: rrf-beacon 1.2s steps(1, end) infinite;
+}
+@keyframes rrf-beacon { 0% { opacity: 1; } 50% { opacity: .15; } }
+
+/* ---------- Anillo LED (persecución por pasos) ---------- */
+.rrf-led {
+  -webkit-mask: conic-gradient(transparent 0 28%, rgba(0, 0, 0, .25) 34%, #000 49.5%, transparent 50% 78%, rgba(0, 0, 0, .25) 84%, #000 99.5%, transparent 100%);
+  mask: conic-gradient(transparent 0 28%, rgba(0, 0, 0, .25) 34%, #000 49.5%, transparent 50% 78%, rgba(0, 0, 0, .25) 84%, #000 99.5%, transparent 100%);
+  animation: rrf-spin var(--d) steps(var(--n)) infinite;
+}
+.rrf-led.rrf-led-b {
+  -webkit-mask: conic-gradient(transparent 0 82%, rgba(0, 0, 0, .3) 88%, #000 99.5%, transparent 100%);
+  mask: conic-gradient(transparent 0 82%, rgba(0, 0, 0, .3) 88%, #000 99.5%, transparent 100%);
+  animation-direction: reverse;
+}
+
+/* ---------- Túnel VJ ---------- */
+.rrf-hex { opacity: 0; animation: rrf-hex 1.876s cubic-bezier(.55, 0, .9, .6) infinite; animation-delay: var(--dl); }
+@keyframes rrf-hex {
+  0% { transform: scale(1.7) rotate(-40deg); opacity: 0; }
+  25% { opacity: 1; }
+  85% { opacity: .9; }
+  100% { transform: scale(.92) rotate(20deg); opacity: 0; }
+}
+
+/* ---------- Mira ---------- */
+.rrf-lock { animation: rrf-lock 3s cubic-bezier(.2, .8, .3, 1) infinite; }
+@keyframes rrf-lock {
+  0% { transform: scale(1.35) rotate(-60deg); opacity: 0; }
+  22% { transform: scale(1) rotate(0deg); opacity: 1; }
+  70% { opacity: 1; } 73% { opacity: .2; } 76% { opacity: 1; } 79% { opacity: .2; } 82% { opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.rrf-rec { animation: rrf-rec 1s steps(1, end) infinite; }
+@keyframes rrf-rec { 0% { opacity: 1; } 50% { opacity: .1; } }
+
+/* ---------- Ondas ---------- */
+.rrf-layer > .rrf-wv {
+  inset: 19.5%; width: 61%; height: 61%; border-radius: 50%;
+  border: 2px solid; opacity: 0;
+  animation: rrf-wv 1.876s cubic-bezier(.2, .6, .4, 1) infinite; animation-delay: var(--dl);
+}
+@keyframes rrf-wv { 0% { transform: scale(1); opacity: .95; } 100% { transform: scale(1.6); opacity: 0; } }
+
+/* ---------- Vinilo ---------- */
+.rrf-vsheen {
+  border-radius: 50%;
+  background: conic-gradient(from 20deg, transparent 0 6%, rgba(255, 255, 255, .13) 11%, transparent 17%, transparent 50%, rgba(255, 255, 255, .09) 61%, transparent 67%);
+  -webkit-mask: radial-gradient(circle closest-side, transparent 60%, #000 62%, #000 95%, transparent 96%);
+  mask: radial-gradient(circle closest-side, transparent 60%, #000 62%, #000 95%, transparent 96%);
+}
+
+/* ---------- Láser ---------- */
+.rrf-fan { mix-blend-mode: screen; animation: rrf-fan var(--d) ease-in-out infinite alternate; animation-delay: var(--dl); }
+@keyframes rrf-fan { from { transform: rotate(var(--a0)); } to { transform: rotate(var(--a1)); } }
+
+/* ---------- Metal ---------- */
+.rrf-gshine {
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 38%, rgba(255, 255, 255, .95) 46%, transparent 54%);
+  -webkit-mask: radial-gradient(circle closest-side, transparent 59.5%, #000 60.5%, #000 68%, transparent 69%);
+  mask: radial-gradient(circle closest-side, transparent 59.5%, #000 60.5%, #000 68%, transparent 69%);
+  mix-blend-mode: overlay;
+  animation: rrf-spin 2.8s linear infinite;
+}
+.rrf-twinkle { transform-box: fill-box; transform-origin: center; animation: rrf-twinkle 2.2s ease-in-out infinite; animation-delay: var(--dl); }
+@keyframes rrf-twinkle { 0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; } 50% { transform: scale(1) rotate(45deg); opacity: 1; } }
+
+/* ---------- Corona de Fundador (neón) ---------- */
+/* Caja de la corona: arriba a la izquierda, ladeada y pisando el borde de la foto */
+.rrf-layer > .rrf-crown {
+  inset: auto; left: 3%; top: -1%; width: 52%; height: 39%;
+  transform: rotate(-22deg); transform-origin: 62% 90%;
+}
+.rrf-crown-bob {
+  position: absolute; inset: 0;
+  animation: rrf-crown-bob 3s ease-in-out infinite alternate;
+  transform-origin: 62% 90%;
+}
+.rrf-crown-bob svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.rrf-crown-glow { position: absolute; inset: 0; animation: rrf-crown-glow 4s linear infinite; }
+@keyframes rrf-crown-bob {
+  from { transform: rotate(0deg) translateY(0); }
+  to { transform: rotate(4deg) translateY(-3%); }
+}
+/* Parpadeo de neón muy suave (solo opacidad: no se redibuja) */
+@keyframes rrf-crown-glow {
+  0%, 100% { opacity: 1; } 46% { opacity: 1; } 48% { opacity: .45; } 50% { opacity: 1; } 53% { opacity: .6; } 55% { opacity: 1; }
+}
+/* Destello que recorre el contorno */
+.rrf-crown-scan { animation: rrf-crown-scan 2.8s linear infinite; }
+@keyframes rrf-crown-scan { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }

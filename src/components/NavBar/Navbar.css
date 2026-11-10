@@ -1,0 +1,232 @@
+/* src/components/Navbar/Navbar.css */
+.navbar-pro {
+  position: absolute; top: 14px; left: 14px; right: 14px; z-index: 25;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  /* Fondo oscuro sólido y sin blur: así se ve igual con el mapa quieto o moviéndose
+     (antes el blur dejaba la barra grisácea al soltar el mapa) */
+  background: rgba(12, 12, 15, 0.95);
+  border: 1px solid var(--border-subtle); padding: 10px 16px; border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+}
+/* Marca del navbar: pin animado + RAVEXRADAR + subtítulo */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 6px;
+  flex-shrink: 0;
+  user-select: none;
+}
+.brand-mark {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 11px;
+  background: radial-gradient(circle at 50% 35%, rgba(250, 204, 21, 0.18), rgba(250, 204, 21, 0.03) 70%), #111116;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+.brand-mark svg {
+  position: relative;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 2px 6px rgba(250, 204, 21, 0.35));
+}
+/* Onda que sale de la base del pin, como un radar */
+.brand-mark-ring {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  width: 22px;
+  height: 7px;
+  margin-left: -11px;
+  border: 1.5px solid #facc15;
+  border-radius: 50%;
+  opacity: 0;
+  animation: brandRipple 2.4s ease-out infinite;
+}
+.brand-mark-ring + .brand-mark-ring { animation-delay: 1.2s; }
+@keyframes brandRipple {
+  0% { transform: scale(0.4); opacity: 0.85; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* Mientras el mapa se mueve, nada animado (rendimiento) */
+html.map-is-moving .brand-mark-ring { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark-ring { animation: none; }
+}
+.navbar-filters { display: flex; gap: 8px; }
+.navbar-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+
+.nav-btn-lang, .nav-btn-profile, .nav-btn-login {
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(24, 24, 27, 0.9); border: 1px solid var(--border-subtle);
+  color: var(--text-primary); padding: 8px 13px; border-radius: 11px;
+  font-size: 12.5px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+}
+.nav-btn-login { border-color: var(--accent-neon); color: var(--accent-neon); }
+.nav-btn-profile:hover, .nav-btn-lang:hover { border-color: var(--accent-neon); }
+.nav-avatar-img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; border: 1px solid var(--accent-neon); }
+
+@media (max-width: 768px) {
+  .navbar-filters { width: 100%; }
+  .navbar-filters > * { flex: 1; }
+}
+
+/* Botón de Ranking DJs en Navbar */
+.nav-btn-ranking {
+  display: flex; align-items: center; gap: 7px;
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.18), rgba(255, 85, 0, 0.18));
+  border: 1px solid var(--accent-neon); color: var(--accent-neon);
+  padding: 8px 13px; border-radius: 11px; font-size: 12.5px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+.nav-btn-ranking:hover {
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.4);
+}
+
+/* Campanita de Notificaciones */
+.nav-bell-wrapper { position: relative; }
+.nav-btn-bell {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 11px;
+  background: rgba(24, 24, 27, 0.9); border: 1px solid var(--border-subtle);
+  color: var(--text-primary); cursor: pointer; transition: all 0.2s;
+}
+.nav-btn-bell.has-notifs { border-color: var(--accent-neon); color: var(--accent-neon); }
+.nav-bell-badge {
+  position: absolute; top: -5px; right: -5px;
+  background: #ef4444; color: #fff; font-size: 10px; font-weight: 700;
+  width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; border: 1.5px solid #09090b;
+}
+
+.nav-notifications-dropdown {
+  position: absolute; top: calc(100% + 8px); right: 0; width: 320px; z-index: 150;
+  background: rgba(15, 15, 19, 0.98); backdrop-filter: blur(22px);
+  border: 1px solid var(--border-subtle); border-radius: 14px; padding: 12px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.9);
+}
+.notif-header {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px; margin-bottom: 8px;
+  font-size: 12.5px;
+}
+.notif-header span { color: var(--accent-neon); font-size: 11px; font-weight: 700; }
+.notif-empty { font-size: 12px; color: var(--text-muted); text-align: center; padding: 14px 0; }
+
+.notif-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; }
+.notif-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  background: #18181b; border: 1px solid var(--border-subtle); padding: 8px 10px; border-radius: 10px;
+}
+.notif-user-info { display: flex; align-items: center; gap: 8px; cursor: pointer; overflow: hidden; }
+.notif-avatar {
+  width: 32px; height: 32px; border-radius: 50%; background: #27272a;
+  border: 1px solid var(--accent-neon); overflow: hidden; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.notif-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.notif-user-info strong { display: block; font-size: 12px; color: #fff; }
+.notif-user-info span { font-size: 10.5px; color: var(--text-muted); }
+
+.notif-actions { display: flex; gap: 5px; flex-shrink: 0; }
+.btn-notif-accept, .btn-notif-reject {
+  width: 28px; height: 28px; border-radius: 7px; border: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.btn-notif-accept { background: #22c55e; color: #000; }
+.btn-notif-reject { background: #27272a; color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
+
+.support-reply-notif {
+  border-color: var(--accent-neon) !important;
+  background: rgba(250, 204, 21, 0.08) !important;
+}
+.notif-support-body { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.notif-support-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10.5px; font-weight: 700; color: var(--accent-neon);
+}
+.notif-support-body p { font-size: 12px; color: #f4f4f5; line-height: 1.35; }
+
+/* PUNTO 1: Botón Subir Fiesta en el Navbar */
+.nav-btn-publish {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-neon);
+  color: #09090b;
+  border: 1px solid var(--accent-neon);
+  padding: 8px 14px;
+  border-radius: 11px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.nav-btn-publish:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 24px rgba(250, 204, 21, 0.6);
+}
+
+/* PUNTO 6: Botón para ir a tu posición en el mapa (a la derecha de tu usuario) */
+.nav-btn-locate-me {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: rgba(24, 24, 27, 0.9);
+  border: 1px solid var(--accent-neon);
+  color: var(--accent-neon);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.nav-btn-locate-me.role-dj {
+  border-color: #ff5500;
+  color: #ff5500;
+}
+.nav-btn-locate-me.role-club {
+  border-color: #06b6d4;
+  color: #06b6d4;
+}
+.nav-btn-locate-me:hover {
+  transform: scale(1.06);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Avisos que se pulsan enteros (p. ej. "Ha aplicado a tu oferta") */
+.notif-item.notif-clickable {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  justify-content: space-between;
+  gap: 8px;
+  border-color: rgba(255, 85, 0, 0.45);
+  background: rgba(255, 85, 0, 0.08);
+}
+.notif-item.notif-clickable:hover { border-color: #ff5500; }
+
+/* Avisos de la tabla notifications (fundador / avisos del admin) */
+.notif-item.app-notif .notif-support-body p { white-space: pre-line; }
+.notif-item.app-notif.is-actionable { cursor: pointer; }
+.notif-item.app-notif.kind-founder {
+  border-color: rgba(250, 204, 21, 0.75);
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.16), rgba(244, 63, 94, 0.08));
+}
+.notif-item.app-notif.kind-broadcast {
+  border-color: rgba(6, 182, 212, 0.55);
+  background: rgba(6, 182, 212, 0.08);
+}
+.notif-item.app-notif.kind-broadcast .notif-support-tag { color: #22d3ee; }

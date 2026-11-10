@@ -1,0 +1,428 @@
+@keyframes pulseSquare {
+  0% {
+    transform: scale(.85);
+    opacity: 1
+  }
+  to {
+    transform: scale(1.95);
+    opacity: 0
+  }
+}
+@keyframes dashMoveLineup {
+  0% {
+    stroke-dashoffset: 32
+  }
+  to {
+    stroke-dashoffset: 0
+  }
+}
+.rave-map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1
+}
+.custom-rave-marker {
+  background: 0 0!important;
+  border: 0!important
+}
+.marker-core-square,.marker-pin-square {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+.marker-core-square {
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  padding: 0!important;
+  margin: 0!important;
+  border: 2px solid var(--accent-neon);
+  overflow: hidden;
+  transition: transform .2s,border-color .2s,box-shadow .2s
+}
+.event-marker-img {
+  width: 100%!important;
+  height: 100%!important;
+  object-fit: cover!important;
+  object-position: center!important;
+  display: block!important;
+  margin: 0!important;
+  padding: 0!important
+}
+.secret-lock-emoji {
+  width: 100%;
+  height: 100%;
+  background: #18181b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px
+}
+.marker-active .marker-core-square {
+  transform: scale(1.25)
+}
+.marker-pulse-square {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: rgba(250,204,21,.45)
+}
+.marker-attending .marker-core-square {
+  border-color: #22c55e;
+  box-shadow: 0 0 16px #22c55e
+}
+.marker-attending .marker-pulse-square {
+  background: rgba(34,197,94,.5)
+}
+.marker-secret .marker-core-square {
+  border-color: #a855f7;
+  box-shadow: 0 0 15px #a855f7
+}
+.marker-secret .marker-pulse-square {
+  background: rgba(168,85,247,.45)
+}
+.cluster-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  z-index: 5;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 7px;
+  border: 1.5px solid #09090b;
+  font-family: "Space Grotesk"
+}
+.custom-dj-marker {
+  background: 0 0!important;
+  border: 0!important
+}
+.dj-pin-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform .2s
+}
+.dj-pin-active,.dj-pin-wrap:hover {
+  transform: scale(1.2);
+  z-index: 40
+}
+.dj-pin-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 0!important;
+  margin: 0!important;
+  border: 2.5px solid #f50;
+  box-shadow: 0 0 15px rgba(255,85,0,.75);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+.dj-pin-active .dj-pin-avatar {
+  border-color: var(--accent-neon);
+  box-shadow: 0 0 20px var(--accent-neon)
+}
+.dj-marker-img {
+  width: 100%!important;
+  height: 100%!important;
+  object-fit: cover!important;
+  object-position: center!important;
+  display: block!important;
+  border-radius: 50%
+}
+.dj-marker-fallback {
+  width: 100%;
+  height: 100%;
+  background: #18181b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px
+}
+.dj-pin-label {
+  margin-top: 2px;
+  background: rgba(9,9,11,.92);
+  border: 1px solid #f50;
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 99px;
+  white-space: nowrap
+}
+.marker-trending .marker-core-square {
+  border-color: #f50;
+  box-shadow: 0 0 18px #f50,0 0 28px rgba(250,204,21,.55)
+}
+.marker-trending .marker-pulse-square {
+  background: linear-gradient(135deg,rgba(255,85,0,.65),rgba(250,204,21,.65))
+}
+.trending-map-badge {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: linear-gradient(135deg,#f50,#facc15);
+  color: #09090b;
+  font-size: 9.5px;
+  font-weight: 900;
+  font-family: "Space Grotesk";
+  padding: 2px 5px;
+  border-radius: 6px;
+  border: 1.5px solid #09090b;
+  box-shadow: 0 2px 8px rgba(0,0,0,.8)
+}
+.club-pin-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform .2s
+}
+.club-pin-active,.club-pin-wrap:hover {
+  transform: scale(1.18);
+  z-index: 45
+}
+.marker-club .marker-core-square {
+  border-color: #06b6d4;
+  box-shadow: 0 0 16px #06b6d4
+}
+.marker-club .marker-pulse-square {
+  background: rgba(6,182,212,.45)
+}
+.club-pin-label,.promoter-pin-label {
+  margin-top: 2px;
+  background: rgba(9,9,11,.92);
+  border: 1px solid #06b6d4;
+  color: #67e8f9;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 99px;
+  white-space: nowrap
+}
+.marker-promoter .marker-core-square {
+  border-color: #f43f5e;
+  box-shadow: 0 0 16px #f43f5e
+}
+.marker-promoter .marker-pulse-square {
+  background: rgba(244,63,94,.45)
+}
+.promoter-pin-label {
+  border: 1px solid #f43f5e;
+  color: #fda4af;
+  font-size: 9.5px
+}
+.dj-pin-wrap.dj-pin-active .dj-pin-avatar {
+  border-color: #f50!important;
+  box-shadow: 0 0 22px #f50,0 0 8px rgba(255,85,0,.8)!important
+}
+.dj-pin-wrap.dj-pin-active .dj-pin-label {
+  border-color: #f50!important;
+  color: #fff!important;
+  background: rgba(9,9,11,.96)!important
+}
+.marker-pulse-square {
+  animation: none!important;
+  opacity: 0
+}
+.marker-active .marker-pulse-square,.marker-trending .marker-pulse-square {
+  opacity: 1;
+  animation: pulseSquare 2.2s infinite ease-out!important
+}
+
+
+/* ==========================================================================
+   RENDIMIENTO + CLUSTERS (motor mapMarkerEngine.js)
+   ========================================================================== */
+
+/* El panel de pins se mueve como UNA capa ya pintada (GPU) al hacer pan/zoom,
+   en vez de repintar cada pin en cada frame. Es la mejora más grande en fluidez. */
+.rave-map-container .leaflet-marker-pane {
+  will-change: transform;
+}
+
+/* Cada pin aislado para que su layout/estilo no afecte al resto */
+.custom-rave-marker,
+.custom-dj-marker,
+.map-cluster-icon {
+  contain: layout style;
+}
+.map-cluster-icon {
+  background: 0 0 !important;
+  border: 0 !important;
+}
+
+/* --- Cluster base --- */
+.map-cluster {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+.map-cluster:hover { transform: scale(1.08); }
+
+/* --- Cluster de EVENTOS: portada del evento top + "flyers apilados" --- */
+.map-cluster--events::before,
+.map-cluster--events::after {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: #121216;
+  border: 1.5px solid rgba(250, 204, 21, 0.5);
+}
+.map-cluster--events::before { transform: translate(7px, -7px) rotate(8deg); opacity: 0.45; }
+.map-cluster--events::after  { transform: translate(3.5px, -3.5px) rotate(4deg); opacity: 0.8; }
+
+.map-cluster-cover {
+  position: relative;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  overflow: hidden;
+  border: 2px solid var(--accent-neon);
+  background: #18181b;
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.55);
+}
+.map-cluster.tier-m .map-cluster-cover,
+.map-cluster.tier-m::before,
+.map-cluster.tier-m::after { width: 42px; height: 42px; }
+.map-cluster.tier-l .map-cluster-cover,
+.map-cluster.tier-l::before,
+.map-cluster.tier-l::after { width: 46px; height: 46px; }
+
+.map-cluster--events.has-trending .map-cluster-cover {
+  border-color: #ff5500;
+  box-shadow: 0 0 16px #ff5500, 0 0 26px rgba(250, 204, 21, 0.45);
+}
+.map-cluster--events.has-trending::after { border-color: rgba(255, 85, 0, 0.6); }
+
+.map-cluster-count {
+  position: absolute;
+  z-index: 4;
+  right: -6px;
+  bottom: -4px;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 99px;
+  background: var(--accent-neon);
+  color: #09090b;
+  font: 800 11px/17px "Space Grotesk", sans-serif;
+  text-align: center;
+  border: 1.5px solid #09090b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+}
+.map-cluster--events .trending-map-badge { z-index: 5; top: -6px; left: -6px; }
+
+/* --- Cluster de DJs / Clubs / Promotores: burbuja con icono + número --- */
+.map-cluster--djs       { --cl: #ff5500; --cl-soft: rgba(255, 85, 0, 0.18);  --cl-glow: rgba(255, 85, 0, 0.55); }
+.map-cluster--clubs     { --cl: #06b6d4; --cl-soft: rgba(6, 182, 212, 0.18); --cl-glow: rgba(6, 182, 212, 0.55); }
+.map-cluster--promoters { --cl: #f43f5e; --cl-soft: rgba(244, 63, 94, 0.18); --cl-glow: rgba(244, 63, 94, 0.55); }
+
+.map-cluster-bubble {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  color: #fff;
+  background: radial-gradient(circle at 50% 30%, #1f1f27, #0b0b0e 72%);
+  border: 2px solid var(--cl);
+  box-shadow: 0 0 0 4px var(--cl-soft), 0 0 16px var(--cl-glow);
+}
+.map-cluster--clubs .map-cluster-bubble,
+.map-cluster--promoters .map-cluster-bubble { border-radius: 13px; }
+.map-cluster-bubble svg { width: 13px; height: 13px; flex-shrink: 0; }
+.map-cluster-num { font: 800 12px/1 "Space Grotesk", sans-serif; }
+.map-cluster.tier-l .map-cluster-num { font-size: 13.5px; }
+
+/* --- Mientras el mapa se mueve: fuera blur de los paneles y pausa de animaciones --- */
+html.map-is-moving .navbar-pro,
+html.map-is-moving .navbar-pro::before,
+html.map-is-moving .top-events-widget,
+html.map-is-moving .radar-layers-hud,
+html.map-is-moving .social-dock-fab,
+html.map-is-moving .social-dock-popup,
+html.map-is-moving .picking-hud-banner,
+html.map-is-moving .event-drawer-shell,
+html.map-is-moving .artist-drawer-shell,
+html.map-is-moving .club-drawer-shell,
+html.map-is-moving .nav-notifications-dropdown {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+html.map-is-moving .navbar-pro { background: rgba(12, 12, 15, 0.95); }
+html.map-is-moving .top-events-widget,
+html.map-is-moving .radar-layers-hud { background: rgba(12, 12, 16, 0.97); }
+
+html.map-is-moving .marker-pulse-square,
+html.map-is-moving .navbar-actions .nav-btn-publish > svg {
+  animation-play-state: paused !important;
+}
+html.map-is-moving .map-cluster:hover { transform: none; }
+
+/* --- Pins de cuentas PRO (DJ, club, promotor): corona en la etiqueta.
+       Los DJs PRO además pueden llevar un marco animado (src/lib/avatarFrames). --- */
+.dj-pin-wrap.has-frame .dj-pin-label { position: relative; z-index: 4; margin-top: 7px; }
+.is-pro-pin .dj-pin-label::before { content: "♛ "; color: #ff5500; }
+.is-pro-pin .club-pin-label::before { content: "♛ "; color: #06b6d4; }
+.is-pro-pin .promoter-pin-label::before { content: "♛ "; color: #f43f5e; }
+
+/* ==========================================================================
+   Fiestas a las que voy (verde) y en las que busco Rave Squad
+   ========================================================================== */
+.marker-attending .marker-core-square { border-color: #22c55e; box-shadow: 0 0 14px rgba(34, 197, 94, 0.85); }
+.marker-attending .marker-pulse-square { background: rgba(34, 197, 94, 0.5); }
+.marker-squad .marker-core-square {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 2px #facc15, 0 0 16px rgba(34, 197, 94, 0.85);
+}
+.mine-map-badge {
+  position: absolute; bottom: -5px; left: -5px; z-index: 6;
+  width: 17px; height: 17px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid #09090b;
+  background: #22c55e; color: #052e16;
+}
+.mine-map-badge.is-squad { background: #facc15; color: #09090b; }
+.map-cluster--events .mine-map-badge { bottom: 0; left: 0; }
+.map-cluster--events.has-mine .map-cluster-cover { border-color: #22c55e; box-shadow: 0 0 12px rgba(34, 197, 94, 0.7); }
+
+/* ==========================================================================
+   Imagen del pin cargando: fondo fijo (sin animaciones) que se quita al cargar
+   ========================================================================== */
+.pin-img:not(.is-loaded),
+.pin-img.is-failed {
+  background-color: #1c1c22;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2352525b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Ccircle cx='12' cy='12' r='2'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, #1a1a20 0%, #2a2a33 50%, #1a1a20 100%);
+  background-size: 44% 44%, 100% 100%;
+  background-position: center, center;
+  background-repeat: no-repeat;
+}

@@ -1,0 +1,446 @@
+/* src/components/ProfileModal/ProfileModal.css */
+.profile-modal-shell {
+  max-width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  transition: max-width 0.25s ease;
+}
+
+/* PUNTO 8: Cuando está en edición, se abre en 2 columnas anchas para que nunca se salga por arriba ni por abajo */
+.profile-modal-shell.is-wide-editor {
+  max-width: 900px;
+  overflow: hidden;
+}
+
+.profile-modal-layout {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+.profile-left-column {
+  width: 390px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+.profile-modal-shell:not(.is-wide-editor) .profile-left-column {
+  width: 100%;
+}
+
+.profile-right-editor {
+  flex: 1;
+  min-width: 0;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-left: 1px solid var(--border-subtle);
+  padding-left: 18px;
+}
+
+.editor-tabs-bar {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 8px;
+  padding-right: 32px;
+}
+.editor-tabs-bar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #18181b;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 7px 11px;
+  border-radius: 9px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.editor-tabs-bar button.active {
+  background: var(--accent-neon);
+  color: #09090b;
+  border-color: var(--accent-neon);
+}
+.editor-tabs-bar button.active-promoter {
+  background: #a855f7;
+  color: #fff;
+  border-color: #a855f7;
+}
+
+.editor-tab-scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+.editor-section-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.editor-footer-btns {
+  display: grid;
+  grid-template-columns: 0.4fr 1fr;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.passport-perspective-stage { perspective: 1100px; margin-bottom: 14px; }
+.holo-passport-card {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, rgba(20, 20, 26, 0.92) 0%, rgba(10, 10, 14, 0.98) 100%);
+  backdrop-filter: blur(24px); border: 1.5px solid rgba(250, 204, 21, 0.65);
+  border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 13px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), inset 0 0 25px rgba(250, 204, 21, 0.08);
+  transition: transform 0.12s ease-out; transform-style: preserve-3d;
+}
+.holo-glare { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.holo-top-bar, .holo-identity, .holo-bio, .holo-stats-grid, .holo-secondary-genres, .holo-footer { position: relative; z-index: 2; }
+.holo-top-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px; }
+.holo-brand { font-size: 12px; font-weight: 700; letter-spacing: 1px; }
+.holo-brand strong { color: var(--accent-neon); }
+.holo-bpm-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--accent-neon); color: #000; font-size: 11px; font-weight: 700;
+  padding: 3px 9px; border-radius: 99px;
+}
+
+.holo-identity { display: flex; align-items: center; gap: 14px; }
+.holo-avatar-wrap {
+  width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent-neon);
+  background: #18181b; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.holo-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+/* Marco PRO alrededor del avatar de la tarjeta: deja aire para que no pise el nombre */
+.holo-identity .holo-avatar-frame { margin: 10px 10px 10px 8px; }
+.holo-user-titles h3 { font-size: 19px; font-weight: 700; color: #fff; }
+.holo-role-badge {
+  display: inline-flex; align-items: center; gap: 4px; margin-top: 4px;
+  background: rgba(250, 204, 21, 0.15); border: 1px solid var(--accent-neon);
+  color: var(--accent-neon); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
+}
+.holo-bio { font-size: 12px; color: #d4d4d8; line-height: 1.4; }
+
+.holo-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.holo-stat {
+  background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 9px 6px; border-radius: 10px; text-align: center; display: flex; flex-direction: column;
+}
+.holo-stat-val { font-size: 13px; font-weight: 700; color: var(--accent-neon); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.holo-stat-lbl { font-size: 9px; color: #a1a1aa; margin-top: 3px; display: flex; align-items: center; justify-content: center; gap: 3px; }
+
+.holo-secondary-genres { display: flex; flex-wrap: wrap; gap: 6px; }
+.holo-subgenre-chip {
+  background: rgba(255, 85, 0, 0.15); border: 1px solid rgba(255, 85, 0, 0.45);
+  color: #ff5500; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 99px;
+}
+
+.holo-footer {
+  display: flex; justify-content: space-between; font-size: 9.5px; color: #71717a;
+  border-top: 1px dashed rgba(255,255,255,0.12); padding-top: 8px; font-family: monospace;
+}
+
+.edit-row { display: flex; gap: 8px; }
+.profile-right-editor input, .profile-right-editor textarea {
+  width: 100%; background: #18181b; border: 1px solid var(--border-subtle);
+  color: #fff; padding: 8px 11px; border-radius: 9px; font-size: 12.5px; outline: none;
+}
+.profile-right-editor input:focus, .profile-right-editor textarea:focus { border-color: var(--accent-neon); }
+
+.mini-field-label { font-size: 11px; font-weight: 700; color: var(--text-muted); }
+.subgenre-box {
+  background: #141418; border: 1px solid var(--border-subtle);
+  padding: 9px 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 6px;
+}
+.btn-add-subgenre {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--accent-neon); color: #000; border: none;
+  padding: 0 12px; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; white-space: nowrap;
+}
+.secondary-chips-list { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+.secondary-Editable-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255, 85, 0, 0.16); border: 1px solid #ff5500; color: #ff5500;
+  font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 99px;
+}
+.secondary-Editable-chip button { background: none; border: none; color: #fff; cursor: pointer; display: flex; }
+
+.social-input-icon-wrap {
+  flex: 1; display: flex; align-items: center; gap: 7px;
+  background: #18181b; border: 1px solid var(--border-subtle);
+  padding: 0 10px; border-radius: 9px;
+}
+.social-input-icon-wrap input { border: none !important; background: transparent !important; padding: 8px 0 !important; }
+
+/* Pestaña Privada para Promotores */
+.promoter-private-banner {
+  display: flex; align-items: flex-start; gap: 8px;
+  background: rgba(168, 85, 247, 0.12); border: 1px solid rgba(168, 85, 247, 0.45);
+  color: #e9d5ff; padding: 9px 11px; border-radius: 10px; font-size: 11.5px; line-height: 1.35;
+}
+.promoter-check-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #18181b; border: 1px solid var(--border-subtle);
+  padding: 0 12px; border-radius: 9px; font-size: 11.5px; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+}
+.promoter-check-pill input { width: auto !important; }
+
+.travel-selector-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  background: #141418; border: 1px solid var(--border-subtle); padding: 8px 10px; border-radius: 10px;
+}
+.travel-toggle-btns { display: flex; gap: 5px; }
+.travel-toggle-btns button {
+  background: #18181b; border: 1px solid var(--border-subtle); color: #a1a1aa;
+  padding: 5px 10px; border-radius: 7px; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+.travel-toggle-btns button.active { background: var(--accent-neon); color: #000; border-color: var(--accent-neon); }
+
+.dj-calendar-box {
+  background: #141418; border: 1px solid var(--border-subtle);
+  padding: 10px; border-radius: 11px; display: flex; flex-direction: column; gap: 6px;
+}
+.dj-calendar-header { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--accent-neon); }
+.dj-calendar-hint { font-size: 11px; color: var(--text-muted); line-height: 1.35; }
+.dj-calendar-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px;
+  max-height: 175px; overflow-y: auto; padding-right: 2px;
+}
+.cal-day-cell {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: #18181b; border: 1px solid var(--border-subtle);
+  padding: 6px 4px; border-radius: 8px; cursor: pointer; color: #d4d4d8;
+}
+.cal-day-label { font-size: 10.5px; font-weight: 700; }
+.cal-day-status { font-size: 8.5px; font-weight: 700; color: #71717a; margin-top: 2px; }
+
+.cal-day-cell.is-free {
+  background: rgba(34, 197, 94, 0.16); border-color: #22c55e; color: #fff;
+}
+.cal-day-cell.is-free .cal-day-status { color: #4ade80; }
+
+.cal-day-cell.is-auto-booked {
+  background: rgba(255, 85, 0, 0.16); border-color: #ff5500; color: #fff; cursor: not-allowed;
+}
+.cal-day-cell.is-auto-booked .cal-day-status { color: #ff5500; }
+
+.avatar-upload-label {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: #18181b; border: 1px dashed var(--accent-neon); color: var(--accent-neon);
+  padding: 8px; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.avatar-upload-label input { display: none; }
+
+.profile-modal-actions { display: flex; flex-direction: column; gap: 12px; padding-top: 10px;}
+.btn-neon-full {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--accent-neon); color: #000; border: none; padding: 11px;
+  border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer;
+}
+.btn-secondary-outline {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: #18181b; color: #fff; border: 1px solid var(--border-subtle);
+  padding: 10px; border-radius: 10px; font-weight: 700; font-size: 12.5px; cursor: pointer;
+}
+.btn-logout-minimal {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: none; border: none; color: #71717a; font-size: 12px; cursor: pointer; margin-top: 4px;
+}
+
+.soundcloud-input-wrap {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255, 85, 0, 0.1); border: 1px solid #ff5500;
+  padding: 0 11px; border-radius: 9px;
+}
+.sc-icon { color: #ff5500; flex-shrink: 0; }
+.soundcloud-input-wrap input { border: none !important; background: transparent !important; padding: 9px 0 !important; }
+.profile-error-banner {
+  display: flex; align-items: center; gap: 6px;
+  color: #ef4444; font-size: 12px; background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35); padding: 8px 10px; border-radius: 8px;
+}
+
+.dj-media-uploader-box {
+  background: #141418; border: 1px solid var(--border-subtle);
+  padding: 10px; border-radius: 10px; display: flex; flex-direction: column; gap: 7px;
+}
+.dj-media-box-title { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: #ff5500; text-transform: uppercase; }
+.dj-media-mini-list { display: flex; flex-direction: column; gap: 4px; max-height: 85px; overflow-y: auto; }
+.dj-media-mini-item {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #18181b; padding: 5px 8px; border-radius: 6px; font-size: 11.5px;
+}
+.dj-media-mini-item button { background: none; border: none; color: #ef4444; cursor: pointer; }
+
+.profile-upcoming-events { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.profile-events-title { font-size: 11px; font-weight: 700; color: var(--accent-neon); text-transform: uppercase; }
+.profile-events-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+.profile-event-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: #18181b; border: 1px solid var(--border-subtle);
+  color: #fff; padding: 5px 10px 5px 5px; border-radius: 99px;
+  font-size: 11.5px; font-weight: 700; cursor: pointer; white-space: nowrap;
+}
+.profile-event-pill:hover { border-color: var(--accent-neon); }
+.profile-event-pill img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+
+@media (max-width: 820px) {
+  .profile-modal-layout { flex-direction: column; }
+  .profile-left-column { width: 100%; }
+  .profile-right-editor { border-left: none; padding-left: 0; border-top: 1px solid var(--border-subtle); padding-top: 12px; }
+}
+
+/* PUNTO 4: Color del Badge de la Carta de Presentación según el tipo de perfil */
+.holo-role-badge.role-raver {
+  background: rgba(250, 204, 21, 0.15);
+  border-color: var(--accent-neon);
+  color: var(--accent-neon);
+}
+.holo-role-badge.role-dj {
+  background: rgba(255, 85, 0, 0.18);
+  border-color: #ff5500;
+  color: #ff5500;
+}
+.holo-role-badge.role-club {
+  background: rgba(6, 182, 212, 0.18);
+  border-color: #06b6d4;
+  color: #67e8f9;
+}
+.holo-role-badge.role-promotor {
+  background: rgba(168, 85, 247, 0.18);
+  border-color: #a855f7;
+  color: #c084fc;
+}
+
+.holo-passport-card.card-role-dj { border-color: rgba(255, 85, 0, 0.7); }
+.holo-passport-card.card-role-club { border-color: rgba(6, 182, 212, 0.7); }
+.holo-passport-card.card-role-promotor { border-color: rgba(168, 85, 247, 0.7); }
+
+/* PUNTO 2: Botón Hacerse PRO estilo VIP Premium con animación Shimmer */
+.btn-pro-vip-premium {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  margin-top: 20px;
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.16) 0%, rgba(255, 85, 0, 0.18) 50%, rgba(168, 85, 247, 0.22) 100%);
+  border: 1.5px solid rgba(250, 204, 21, 0.75);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(250, 204, 21, 0.22), inset 0 0 18px rgba(250, 204, 21, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  text-align: left;
+}
+
+.btn-pro-vip-premium:hover {
+  transform: translateY(-2px) scale(1.01);
+  border-color: #fff;
+  box-shadow: 0 14px 34px rgba(255, 85, 0, 0.4), 0 0 22px rgba(250, 204, 21, 0.45);
+}
+
+.pro-vip-shimmer {
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 65%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.26),
+    transparent
+  );
+  transform: skewX(-25deg);
+  animation: vipShimmerMove 3.2s infinite;
+  pointer-events: none;
+}
+
+@keyframes vipShimmerMove {
+  0% { left: -120%; }
+  45%, 100% { left: 160%; }
+}
+
+.pro-vip-left {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  position: relative;
+  z-index: 2;
+}
+
+.pro-vip-crown-box {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #facc15, #ff5500);
+  color: #09090b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.6);
+}
+
+.pro-vip-texts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pro-vip-texts strong {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #ffffff, #fde047);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.pro-vip-texts span {
+  font-size: 10.5px;
+  color: #e4e4e7;
+}
+
+.pro-vip-pill {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, #facc15, #ff5500);
+  color: #09090b;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.6px;
+  box-shadow: 0 0 12px rgba(250, 204, 21, 0.45);
+}
+
+/* ID Pass de clubs y promotores: foto cuadrada y del color de su tipo (como en el mapa) */
+.holo-passport-card.card-role-club .holo-avatar-wrap {
+  border-radius: 14px;
+  border-color: #06b6d4;
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.45);
+}
+.holo-passport-card.card-role-promotor .holo-avatar-wrap {
+  border-radius: 14px;
+  border-color: #f43f5e;
+  box-shadow: 0 0 14px rgba(244, 63, 94, 0.45);
+}
+
+/* Aviso bajo "Guardar Perfil" cuando el marco elegido no se puede guardar */
+.editor-save-blocked {
+  margin: 8px 0 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #fde68a;
+  background: rgba(250, 204, 21, 0.08);
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  border-radius: 9px;
+  padding: 7px 10px;
+}
+.btn-neon-full:disabled { opacity: 0.45; cursor: not-allowed; filter: grayscale(0.3); box-shadow: none; }
